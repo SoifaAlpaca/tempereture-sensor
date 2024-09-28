@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1727517530.49962 "c:/Users/sofia/OneDrive - FCT NOVA/Documentos/PlatformIO/Projects/tempereture-sensor/report/main.tex" "main.pdf" "main" 1727517532.3131 0
+["pdflatex"] 1727546545.46157 "c:/Users/sofia/OneDrive - FCT NOVA/Documentos/PlatformIO/Projects/tempereture-sensor/report/main.tex" "main.pdf" "main" 1727546547.23289 0
   "C:/Users/sofia/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1727373083 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/sofia/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1724504570 24265333 1d83b6f25f4e02ca24e1024e7fe54617 ""
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
@@ -207,12 +207,12 @@
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/tex/latex/xkeyval/xkeyval.sty" 1656236919 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
   "NovaFct.png" 1727372282 32716 dab2b25a1d8bfdbcd6333e8ba0b35eb5 ""
-  "c:/Users/sofia/OneDrive - FCT NOVA/Documentos/PlatformIO/Projects/tempereture-sensor/report/main.tex" 1727517529 6833 b83a2a417451fff96a145e0b5c317f3d ""
-  "main.aux" 1727517532 1989 e8a01b905ba2004410604ce01e396b55 "pdflatex"
-  "main.lof" 1727517532 165 21a12a0d9cc7796781630d5c7a55e348 "pdflatex"
-  "main.out" 1727517532 1875 4224ae26be7b5e4d618531c2c5b8f525 "pdflatex"
-  "main.tex" 1727517529 6833 b83a2a417451fff96a145e0b5c317f3d ""
-  "main.toc" 1727517532 941 7d86573ba8a3aca7e6ff6a1ac954c972 "pdflatex"
+  "c:/Users/sofia/OneDrive - FCT NOVA/Documentos/PlatformIO/Projects/tempereture-sensor/report/main.tex" 1727546544 7409 cf06df2af021c5fb220e96eac8fd7511 ""
+  "main.aux" 1727546546 2367 2848a4867746383cc4a762b95ffb8e8b "pdflatex"
+  "main.lof" 1727546546 165 21a12a0d9cc7796781630d5c7a55e348 "pdflatex"
+  "main.out" 1727546546 2354 a15696287ca33efc9e715d102a7b0081 "pdflatex"
+  "main.tex" 1727546544 7409 cf06df2af021c5fb220e96eac8fd7511 ""
+  "main.toc" 1727546546 1196 07c88cf0b37db5ca22b619bc44b8893c "pdflatex"
   "system-design.png" 1727515123 50043 1fc142659f2453a91bff1940a04a68ff ""
   (generated)
   "main.aux"
