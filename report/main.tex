@@ -76,8 +76,8 @@
 \renewcommand{\appendixpagename}{\LARGE Appendices}
 
 % Colors
-\definecolor{istblue}{RGB}{3, 171, 230}
-\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{NovaFctblue}{RGB}{65, 129, 214} %rgb(65, 129, 214) rgb(77, 152, 252) rgb(54, 106, 176)
+\definecolor{dkgreen}{rgb}{0,0.6,0} 
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,9 +96,12 @@
 
     \mbox{}\\[2.0cm]
     \textsc{\Huge MEEC/MIEEC}\\[2.5cm]
-    \textsc{\LARGE Eletrónica para Micro-Sistemas}\\[2.0cm]
+    \textsc{\LARGE Electronics for Micro-Systems}\\[2.0cm]
     \HRule\\[0.4cm]
-    {\large \bf { Laboratório 1 Sensor de Temperatura } [\texttt{EN}]}\\[0.2cm]
+    {\large \bf { Lab\#1 \linebreak A Temperature Meter
+    System with 3 Sensors,
+    Relay and GUI
+    }}\\[0.2cm] % [\texttt{EN}]
     \HRule\\[1.5cm]
 \end{center}
 
@@ -111,14 +114,14 @@
         \begin{flushleft}
             Martim Duarte Agostinho (70392)\\
             Lorem Ipsum (\texttt{ISTID} $\in \mathbb{Z}^+$)\\
-            Lorem Ipsum (\texttt{ISTID} $\in \mathbb{Z}^+$)
+            Sofia Margarida Mafra Dias Inácio (58079)\\
         \end{flushleft}
     \end{minipage}%
     \begin{minipage}{0.5\textwidth}
         \begin{flushright}
             \href{mailto:md.agostinho@campus.fct.unl.pt}{\texttt{md.agostinho@campus.fct.unl.pt}}\\
             \href{mailto:lorem.ipsum@campus.fct.unl.pt}{\texttt{lorem.ipsum@campus.fct.unl.pt}}\\
-            \href{mailto:lorem.ipsum@campus.fct.unl.pt}{\texttt{lorem.ipsum@campus.fct.unl.pt}}
+            \href{mailto:lorem.ipsum@campus.fct.unl.pt}{\texttt{sm.inacio@campus.fct.unl.pt}}
         \end{flushright}
     \end{minipage}
 \end{center}
@@ -131,7 +134,7 @@
 \vspace{6cm}
 
 \begin{center}
-    \large \bf 2023/2024 -- \nth{2} Semester, P4
+    \large \bf 2024/2025 -- \nth{1} Semester -- DEEC
 \end{center}
 
 \thispagestyle{empty}
@@ -149,6 +152,26 @@
 \listoffigures
 
 \newpage
+
+\section{Intoduction}
+explain the requirements and the main objectives of the project
+
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.5]{system-design.png}
+        \caption{Temperature sensing system with 3 three types of sensors.}
+        \label{wrap-fig:1}
+    \end{figure}
+
+\pagebreak
+
+\section{Temperature Sensors}
+\subsection{NTC - Negative Temperature Coefficient}
+\subsection{LM35 - Precision Centigrade Temperature Sensor}
+\subsection{DS18B20 - Digital Thermometer}
+
+\section{System Design}
+\subsection{Analog FrontEnd (AFE) NTC}
 
 Para usar equacao Steinhart-Hart $\frac{1}{T} = A + B\cdot \ln(R) + C\cdot [\ln(R)]^3$, precisamos de usar 3 pontos para encontrar as constantes $A$, $B$ e $C$.
 
@@ -174,14 +197,12 @@ $R(T) = R_{NTC} $ onde $T$ é a temperatura em kelvin e $R_{NTC}$ é o valor da 
 
 
 
-\section{SECCAO}
-\lipsum
 
-    \begin{figure}[H]
-        \centering
-        \includegraphics*[scale = 0.5]{NovaFct.png}
-        \caption{Logo da Nova FCT}
-        \label{wrap-fig:1}
-    \end{figure}
+\section{Simulations}
 
+\section{Implementation and Experimental Tests}
+
+\section{Results Analysis}
+
+\section{Conclusion}
 \end{document}
