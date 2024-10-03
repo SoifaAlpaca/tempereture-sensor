@@ -16,16 +16,15 @@ def NtcTempToVoltage():
     T0   =  298.15
     b    = 3965
     Rntc = R0*( exp( b*( (1/T) - (1/T0) ) ) )
-    #plot( Rntc,(T,Tmin,Tmax) )
-    #print(Rntc)
     Vout = Rntc/(Rntc+R)
     Vout = Vout * vcc
     
-    p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax))
-    p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax))
-
-    print( str( Vout.evalf(subs={R:10*k,T:Tmax}) ) + " " +str(Vout.evalf(subs={R:10*k,T:Tmin})) )
-    print( Vout.evalf(subs={R:100*k,T:Tmax}) - Vout.evalf(subs={R:100*k,T:Tmin}) )
+    p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax), xlabel='Temperature (°C)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (8k$\Omega$)',show=False,axis_center=(282,1.3))
+    #p.show()
+    p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax), xlabel='Temperature (°C)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (100k$\Omega$)',show=False,axis_center=(282,0.15))
+    p.show()
+    print( str( Vout.evalf(subs={R:8*k,T:Tmax}) ) + " " +str(Vout.evalf(subs={R:8*k,T:Tmin})) )
+    #print( Vout.evalf(subs={R:100*k,T:Tmax}) - Vout.evalf(subs={R:100*k,T:Tmin}) )
 
 
 def NtcResToVoltage():
@@ -52,6 +51,8 @@ def NtcResToVoltage():
 
 
 #----------------LM35----------------#
+#Com o circuito novo ]e sem offset
+
 def lm35():
     vin, T, vout, s, ra, rb,ro,rf,r1,r2,vcc = symbols("V_{in},T,V_{out},sigma,R_a,R_b,R_o,R_f,R_1,R_2,V_{cc}")
     emax = symbols("epsilon_{max}")
@@ -106,4 +107,34 @@ def lm35():
 
 
 #NtcResToVoltage()
-NtcTempToVoltage()
+#NtcTempToVoltage()
+
+def AfeNtc():
+
+    vo, vp, vcc , r3, r1,r2,it,rf = symbols("V_{out}, V_p, V_{cc}, R_3, R_1,R_2, i_t, R_f")
+    
+    it = -(vp/r2) + ( vcc - vp )/r1
+    vo = vp - it*rf
+    #Here the circuit's function is found
+    print("Circuit Function: ")
+    print(latex(factor(vo,vp)))
+    print()
+    #r1= 10*k
+    
+    #After having the circuit function we analyse the equation
+    # and find the part that's responsible for the offset and gain
+    # and solve the equation system that gives us the desired offset and gain 
+    rf  = 10*k
+    vcc = 3.3
+    
+    of = rf/r1 #Offset
+    of = of * vcc
+    gain = 1 + rf*( (r2+r1)/(r2*r1) )
+    #gain = gain.subs(rf,10*k).evalf()
+    #of   = of.subs(rf,10*k).evalf()
+
+    print("R1,R2")
+    s = solve( [ gain - 2.92,of - 3.53 ],r1,r2 )
+    print(s)
+
+AfeNtc()
