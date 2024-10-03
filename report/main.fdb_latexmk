@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1727732542.7787 "/home/porcaontas/Uni/MEEC/SM1/EMS/Pratica/Lab1/tempereture-sensor-main/report/main.tex" "main.pdf" "main" 1727732543.78928 0
-  "/home/porcaontas/Uni/MEEC/SM1/EMS/Pratica/Lab1/tempereture-sensor-main/report/main.tex" 1727732542.57233 10505 e780244a91a20120afab84493ae58f40 ""
+["pdflatex"] 1727962117.22351 "/home/porcaontas/Uni/MEEC/SM1/EMS/Pratica/Lab1/tempereture-sensor-main/report/main.tex" "main.pdf" "main" 1727962118.99985 0
+  "/home/porcaontas/Uni/MEEC/SM1/EMS/Pratica/Lab1/tempereture-sensor-main/report/main.tex" 1727962116.9114 10514 d23a906a0079f8c9291674901e76c6ac ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1716849630 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1716849630 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1716849630 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -37,7 +37,6 @@
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1716849630 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1716849630 36118 fad905eba93cff5bce1e185fe980a177 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb" 1716849630 24252 1e4e051947e12dfb50fee0b7f4e26e3a ""
-  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1716849630 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1716849630 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1716849630 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
   "/usr/share/texmf-dist/tex/generic/babel-english/english.ldf" 1716849630 7008 9ff5fdcc865b01beca2b0fe4a46231d4 ""
@@ -204,11 +203,11 @@
   "images/ErroTempLm35AFE.png" 1727722021.69805 26532 62a50a140795c768fe01ad49b9d05080 ""
   "images/system-design.png" 1727546735 50043 196dc37025728688357f7876a330a070 ""
   "images/voltagedivider.png" 1727725842.04315 5966 13b8ef7064ac2cdf5bbca886195619c4 ""
-  "main.aux" 1727732543.68566 3065 f0f96020daae0b4969680cb07e2177e5 "pdflatex"
-  "main.lof" 1727732543.689 459 d067d34ec66e2a1f3f77c9ecf1f477ce "pdflatex"
-  "main.out" 1727732543.68566 2359 4c044abc328c9f8839dff9f912d97a69 "pdflatex"
-  "main.tex" 1727732542.57233 10505 e780244a91a20120afab84493ae58f40 ""
-  "main.toc" 1727732543.689 1197 2f0cf463b4ae44daeb86dddfcad91631 "pdflatex"
+  "main.aux" 1727962118.84138 3065 f0f96020daae0b4969680cb07e2177e5 "pdflatex"
+  "main.lof" 1727962118.84471 459 d067d34ec66e2a1f3f77c9ecf1f477ce "pdflatex"
+  "main.out" 1727962118.84138 2359 4c044abc328c9f8839dff9f912d97a69 "pdflatex"
+  "main.tex" 1727962116.9114 10514 d23a906a0079f8c9291674901e76c6ac ""
+  "main.toc" 1727962118.84138 1197 2f0cf463b4ae44daeb86dddfcad91631 "pdflatex"
   (generated)
   "main.aux"
   "main.lof"

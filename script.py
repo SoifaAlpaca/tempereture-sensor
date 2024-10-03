@@ -4,7 +4,31 @@ from sympy.plotting import plot
 
 k = 1000
 
-def NtcToVoltage():
+def NtcTempToVoltage():
+    #Here altough less accurate its used the Beta model
+    #Because it gives the resistance at a certain temperature 
+    R, R0, T0, b,Rntc,T, Vout  = symbols("R, R_0, T_0, beta,R_{NTC}, T, V_{out}")
+    
+    vcc  = 3.3 
+    Tmin = 10  + 273.15
+    Tmax = 40 + 273.15
+    R0   = 10*k
+    T0   =  298.15
+    b    = 3965
+    Rntc = R0*( exp( b*( (1/T) - (1/T0) ) ) )
+    #plot( Rntc,(T,Tmin,Tmax) )
+    #print(Rntc)
+    Vout = Rntc/(Rntc+R)
+    Vout = Vout * vcc
+    
+    p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax))
+    p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax))
+
+    print( str( Vout.evalf(subs={R:10*k,T:Tmax}) ) + " " +str(Vout.evalf(subs={R:10*k,T:Tmin})) )
+    print( Vout.evalf(subs={R:100*k,T:Tmax}) - Vout.evalf(subs={R:100*k,T:Tmin}) )
+
+
+def NtcResToVoltage():
     vcc, rwb, R,V1 ,V2, V3,NTC = symbols( "V_{cc}, R_{wb}, R,V_1,V_2,V_3, R_{NTC}" )
     
     vcc = 3.3 
@@ -81,4 +105,5 @@ def lm35():
     p.show()
 
 
-NtcToVoltage()
+#NtcResToVoltage()
+NtcTempToVoltage()
