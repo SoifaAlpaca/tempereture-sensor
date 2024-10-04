@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1727741669.91734 "c:/Users/sofia/OneDrive - FCT NOVA/Documentos/PlatformIO/Projects/tempereture-sensor/report/main.tex" "main.pdf" "main" 1727741671.72905 0
+["pdflatex"] 1727962619.37369 "c:/Users/sofia/OneDrive - FCT NOVA/Documentos/PlatformIO/Projects/tempereture-sensor/report/main.tex" "main.pdf" "main" 1727962622.52237 0
   "C:/Users/sofia/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1727373083 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/sofia/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1724504570 24265333 1d83b6f25f4e02ca24e1024e7fe54617 ""
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
@@ -37,7 +37,6 @@
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1247596667 32626 5abc8bb2f28aa647d4c70f8ea38cc0d3 ""
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1247596667 36118 fad905eba93cff5bce1e185fe980a177 ""
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb" 1247596666 24252 1e4e051947e12dfb50fee0b7f4e26e3a ""
-  "C:/Users/sofia/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1247596673 34694 870c211f62cb72718a00e353f14f254d ""
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/tex/context/base/mkii/supp-pdf.mkii" 1580390158 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/tex/generic/atbegshi/atbegshi.sty" 1575571100 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/tex/generic/babel/babel.sty" 1719641066 146636 00e6e4b5a5b72cebe149cf3066d53b30 ""
@@ -207,16 +206,16 @@
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "C:/Users/sofia/AppData/Local/Programs/MiKTeX/tex/latex/xkeyval/xkeyval.sty" 1656236919 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
   "NovaFct.png" 1727372282 32716 dab2b25a1d8bfdbcd6333e8ba0b35eb5 ""
-  "c:/Users/sofia/OneDrive - FCT NOVA/Documentos/PlatformIO/Projects/tempereture-sensor/report/main.tex" 1727741664 10799 e780244a91a20120afab84493ae58f40 ""
+  "c:/Users/sofia/OneDrive - FCT NOVA/Documentos/PlatformIO/Projects/tempereture-sensor/report/main.tex" 1727962617 10808 d23a906a0079f8c9291674901e76c6ac ""
   "images/AFELM35.png" 1727741664 28606 4c98dd69db438e62b9846322620fe5b1 ""
   "images/ErroTempLm35AFE.png" 1727741664 26532 2bb787ddc54114b6d9d127657015f8c3 ""
   "images/system-design.png" 1727741664 50043 1fc142659f2453a91bff1940a04a68ff ""
   "images/voltagedivider.png" 1727741664 5966 3a989b3148878caaf4acd8285af9fda2 ""
-  "main.aux" 1727741671 3065 f0f96020daae0b4969680cb07e2177e5 "pdflatex"
-  "main.lof" 1727741671 459 d067d34ec66e2a1f3f77c9ecf1f477ce "pdflatex"
-  "main.out" 1727741671 2359 4c044abc328c9f8839dff9f912d97a69 "pdflatex"
-  "main.tex" 1727741664 10799 e780244a91a20120afab84493ae58f40 ""
-  "main.toc" 1727741671 1197 2f0cf463b4ae44daeb86dddfcad91631 "pdflatex"
+  "main.aux" 1727962622 3065 f0f96020daae0b4969680cb07e2177e5 "pdflatex"
+  "main.lof" 1727962622 459 d067d34ec66e2a1f3f77c9ecf1f477ce "pdflatex"
+  "main.out" 1727962622 2359 4c044abc328c9f8839dff9f912d97a69 "pdflatex"
+  "main.tex" 1727962617 10808 d23a906a0079f8c9291674901e76c6ac ""
+  "main.toc" 1727962622 1197 2f0cf463b4ae44daeb86dddfcad91631 "pdflatex"
   (generated)
   "main.aux"
   "main.lof"
