@@ -175,27 +175,11 @@ explain the requirements and the main objectives of the project
 
 \subsection{LM35 - Precision Centigrade Temperature Sensor}
 
-
-     \begin{figure}[H] 
-        \centering
-        \includegraphics*[scale = 0.2]{images/AFELM35.png}
-        \caption{AFE for the LM35 sensor.}
-        \label{wrap-fig:1}
-    \end{figure}
-
-   \begin{figure}[H] 
-        \centering
-        \includegraphics*[scale = 0.5]{images/ErroTempLm35AFE.png}
-        \caption{AFE error curve.}
-        \label{wrap-fig:1}
-    \end{figure}
-
-
 \subsection{DS18B20 - Digital Thermometer}
 
 \section{System Design}
 \subsection{Analog FrontEnd (AFE) NTC}
-
+\label{ AFENTC }
 
     \textcolor{red}{A parte onde definimos o intervalo de temperatura nao devia estar aqui pq é para todos os circuitos}
 
@@ -254,7 +238,7 @@ explain the requirements and the main objectives of the project
 
     $\cdot$ The output resistance is really high $R\parallel NTC$, 
 
-    $\cdot$ The output voltage is higly non linear, which is a problem because this way some \textit{ADC} resolution is lost.
+    $\cdot$ The output voltage is highly non linear, which is a problem because this way some \textit{ADC} resolution is lost.
 
     The first problem is solved through a buffer at the entrance of the \textit{AFE}, 
     and the second is somewhat mitigated by using a resistor value around $8k \Omega$.
@@ -319,12 +303,36 @@ explain the requirements and the main objectives of the project
 
 \subsection{LM35}
 
-    This integrated-circuit temperature sensor,generates an output
-voltage linearly proportional to the Centigrade temperature
+    This integrated-circuit temperature sensor, generates an output
+    voltage linearly proportional to the Centigrade temperature.
 
-$$V_{out} = 10^{-2}\cdot T$$
+    $$V_{out} = 10^{-2}\cdot T$$
 
-Thus in the specified conditions $V_{out}\in[0.1;0.4]$, as done in the last section we will be using a differential amplifier to fit this interval in the \textit{ADC}'s range.
+    Hence, in the specified conditions $V_{out}\in[0.1;0.4]$. 
+    To increase resolution as done in \hyperref[ AFENTC ]{NTC's AFE subsection},
+    it's needed to add gain and an offset. 
+    For this purpose a differential amplifier can be used.  
+    
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.3]{images/DiffAmpLM35.png}
+        \caption{LM35 Differential Amplifier.}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    Although this circuit achieves the expected output, the amount of components,
+    increases noise and power consumption, thus the used topology was a non-inverting amplifier.
+
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.2]{images/AFELM35.png}
+        \caption{AFE for the LM35 sensor.}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    This way the input impedance is high, only one OpAmp and two resistors are used.
+    But this comes with the cost of lost resolution. With a gain of $8$ $V_{out}\in[0.8V,3.2V]$
+    $0.8V$ of range in the \textit{ADC} are lost. 
 
 \subsection{DS18B20 ??(Este tem Dimensionamento?)}
 \subsection{Relé de saída }

@@ -7,9 +7,9 @@
 \contentsline {section}{\numberline {3}System Design}{4}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Analog FrontEnd (AFE) NTC}{4}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}LM35}{7}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}DS18B20 ??(Este tem Dimensionamento?)}{7}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Relé de saída }{7}{subsection.3.4}%
-\contentsline {section}{\numberline {4}Simulations}{7}{section.4}%
-\contentsline {section}{\numberline {5}Implementation and Experimental Tests}{7}{section.5}%
-\contentsline {section}{\numberline {6}Results Analysis}{7}{section.6}%
-\contentsline {section}{\numberline {7}Conclusion}{7}{section.7}%
+\contentsline {subsection}{\numberline {3.3}DS18B20 ??(Este tem Dimensionamento?)}{8}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Relé de saída }{8}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Simulations}{8}{section.4}%
+\contentsline {section}{\numberline {5}Implementation and Experimental Tests}{8}{section.5}%
+\contentsline {section}{\numberline {6}Results Analysis}{8}{section.6}%
+\contentsline {section}{\numberline {7}Conclusion}{8}{section.7}%

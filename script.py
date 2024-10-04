@@ -5,7 +5,7 @@ from sympy.plotting import plot
 k = 1000
 
 def NtcTempToVoltage():
-    #Here altough less accurate its used the Beta model
+    #Here although less accurate its used the Beta model
     #Because it gives the resistance at a certain temperature 
     R, R0, T0, b,Rntc,T, Vout  = symbols("R, R_0, T_0, beta,R_{NTC}, T, V_{out}")
     
@@ -19,18 +19,17 @@ def NtcTempToVoltage():
     Vout = Rntc/(Rntc+R)
     Vout = Vout * vcc
     
-    p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax), xlabel='Temperature (°C)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (8k$\Omega$)',show=False,axis_center=(282,1.3))
+    p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (8k$\Omega$)',show=False,axis_center=(282,1.3))
     #p.show()
-    p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax), xlabel='Temperature (°C)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (100k$\Omega$)',show=False,axis_center=(282,0.15))
+    p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (100k$\Omega$)',show=False,axis_center=(282,0.15))
     p.show()
     print( str( Vout.evalf(subs={R:8*k,T:Tmax}) ) + " " +str(Vout.evalf(subs={R:8*k,T:Tmin})) )
     #print( Vout.evalf(subs={R:100*k,T:Tmax}) - Vout.evalf(subs={R:100*k,T:Tmin}) )
 
-
 def NtcResToVoltage():
     vcc, rwb, R,V1 ,V2, V3,NTC = symbols( "V_{cc}, R_{wb}, R,V_1,V_2,V_3, R_{NTC}" )
     
-    vcc = 3.3 
+    vcc    = 3.3 
     NTCmin = 0.5*k
     NTCmax = 20*k
 
@@ -48,6 +47,34 @@ def NtcResToVoltage():
 
     print( V2.evalf(subs={R:10*k,NTC:NTCmax}) - V2.evalf(subs={R:10*k,NTC:NTCmin}) )
     print( V2.evalf(subs={R:100*k,NTC:NTCmax}) - V2.evalf(subs={R:100*k,NTC:NTCmin}) )
+
+def AfeNtc():
+
+    vo, vp, vcc , r3, r1,r2,it,rf = symbols("V_{out}, V_p, V_{cc}, R_3, R_1,R_2, i_t, R_f")
+    
+    it = -(vp/r2) + ( vcc - vp )/r1
+    vo = vp - it*rf
+    #Here the circuit's function is found
+    print("Circuit Function: ")
+    print(latex(factor(vo,vp)))
+    print()
+    #r1= 10*k
+    
+    #After having the circuit function we analyse the equation
+    # and find the part that's responsible for the offset and gain
+    # and solve the equation system that gives us the desired offset and gain 
+    rf  = 10*k
+    vcc = 3.3
+    
+    of = rf/r1 #Offset
+    of = of * vcc
+    gain = 1 + rf*( (r2+r1)/(r2*r1) )
+    #gain = gain.subs(rf,10*k).evalf()
+    #of   = of.subs(rf,10*k).evalf()
+
+    print("R1,R2")
+    s = solve( [ gain - 2.92,of - 3.53 ],r1,r2 )
+    print(s)
 
 
 #----------------LM35----------------#
@@ -108,33 +135,4 @@ def lm35():
 
 #NtcResToVoltage()
 #NtcTempToVoltage()
-
-def AfeNtc():
-
-    vo, vp, vcc , r3, r1,r2,it,rf = symbols("V_{out}, V_p, V_{cc}, R_3, R_1,R_2, i_t, R_f")
-    
-    it = -(vp/r2) + ( vcc - vp )/r1
-    vo = vp - it*rf
-    #Here the circuit's function is found
-    print("Circuit Function: ")
-    print(latex(factor(vo,vp)))
-    print()
-    #r1= 10*k
-    
-    #After having the circuit function we analyse the equation
-    # and find the part that's responsible for the offset and gain
-    # and solve the equation system that gives us the desired offset and gain 
-    rf  = 10*k
-    vcc = 3.3
-    
-    of = rf/r1 #Offset
-    of = of * vcc
-    gain = 1 + rf*( (r2+r1)/(r2*r1) )
-    #gain = gain.subs(rf,10*k).evalf()
-    #of   = of.subs(rf,10*k).evalf()
-
-    print("R1,R2")
-    s = solve( [ gain - 2.92,of - 3.53 ],r1,r2 )
-    print(s)
-
 AfeNtc()
