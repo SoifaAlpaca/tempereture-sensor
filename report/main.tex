@@ -334,10 +334,80 @@ explain the requirements and the main objectives of the project
     But this comes with the cost of lost resolution. With a gain of $8$ $V_{out}\in[0.8V,3.2V]$
     $0.8V$ of range in the \textit{ADC} are lost. 
 
-\subsection{DS18B20 ??(Este tem Dimensionamento?)}
-\subsection{Relé de saída }
+\subsection{Output Relay }
+    
+    Lastly the \textit{MCU} will turn on and off a fan. For this purpose 
+    a relay will open and close the fan circuit. Because the \textit{MCU's I/O} 
+    can drive the relay a \textit{NPN} transistor is use to get enough current.
+    Thus the following circuit also needs to be dimensioned. It's important to note
+    that the diode is needed to protect the circuit.
+    
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
+        \caption{Relay circuit.}
+        \label{wrap-fig:1}
+    \end{figure}
+    \textcolor{red}{PRECISA DE ENCHER CHOURICO AQUI}
+    \begin{equation}
+        R = \frac{I/O_{HIGH}-V_{BE}}{I_r}\cdot \beta\\
+        \Leftrightarrow R = 
+    \end{equation}
+
 
 \section{Simulations}
+\subsection{NTC}
+    
+    For the purpose of testing the following circuit was designed.
+    At first with linear voltage supply.
+
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
+        \caption{Relay circuit.}
+        \label{wrap-fig:1}
+    \end{figure}
+    Producing the following results.
+ 
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
+        \caption{Relay circuit.}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    Confirming the effectiveness of the \textit{AFE} circuit a more realistic
+    circuit was tested.
+
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
+        \caption{Relay circuit.}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    Confirming that the output is nearly linear in relation to the temperature variation.
+
+\subsection{LM35}
+
+    For this sensor the simulation is straight forward, since the output is linear and proportional to the temperature, 
+    it can be simulated with variable voltage supply. 
+
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
+        \caption{Relay circuit.}
+        \label{wrap-fig:1}
+    \end{figure}
+    
+    Giving the following results.
+    
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
+        \caption{Relay circuit.}
+        \label{wrap-fig:1}
+    \end{figure}
 
 \section{Implementation and Experimental Tests}
 

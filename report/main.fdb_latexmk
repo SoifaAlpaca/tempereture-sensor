@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1728052613.51498 "/home/porcaontas/Uni/MEEC/SM1/EMS/Pratica/Lab1/tempereture-sensor-main/report/main.tex" "main.pdf" "main" 1728052614.7125 0
-  "/home/porcaontas/Uni/MEEC/SM1/EMS/Pratica/Lab1/tempereture-sensor-main/report/main.tex" 1728052613.30845 12863 0127d1ee6c19d2b3df76e565798b0902 ""
+["pdflatex"] 1728062132.23312 "/home/porcaontas/Uni/MEEC/SM1/EMS/Pratica/Lab1/tempereture-sensor-main/report/main.tex" "main.pdf" "main" 1728062134.21006 0
+  "/home/porcaontas/Uni/MEEC/SM1/EMS/Pratica/Lab1/tempereture-sensor-main/report/main.tex" 1728062129.86699 15061 b8e022598e2be870f9d2caab4e576bf7 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1716849630 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1716849630 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1716849630 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -207,15 +207,16 @@
   "images/AFELM35.png" 1727997807.61857 26902 142fd6358c8413ad9e8bafe36ddc7edc ""
   "images/AFENTC.png" 1728030676.35823 15952 8376ac47b91893295f53d7b8e924e36e ""
   "images/DiffAmpLM35.png" 1728050796.46099 20288 ff99a3281bde010c8fa5b370d795b58d ""
+  "images/RelayDrive.png" 1728055883.85878 9253 e51fd65533855557d07ae30d2e0ed375 ""
   "images/VoutPorTemp.png" 1727964510.96915 27853 c27516948fdd7f8e24bf9906f4b8ea15 ""
   "images/VoutPorTemp100k.png" 1727965562.6737 28727 7f0b8e25970322c5d0f45945e9f91fd0 ""
   "images/system-design.png" 1727546735 50043 196dc37025728688357f7876a330a070 ""
   "images/voltagedivider.png" 1728048926.20393 9081 f1fc1bda532572c2a88185bb0b73ccee ""
-  "main.aux" 1728052614.61178 3519 2febee2d7132acb89d845617d3d2420f "pdflatex"
-  "main.lof" 1728052614.61511 674 4625c6d219ce2ac72ea5968499f2c5f9 "pdflatex"
-  "main.out" 1728052614.61511 2359 4c044abc328c9f8839dff9f912d97a69 "pdflatex"
-  "main.tex" 1728052613.30845 12863 0127d1ee6c19d2b3df76e565798b0902 ""
-  "main.toc" 1728052614.61511 1197 7ad33b2af61ea46009480ce63b1ac19b "pdflatex"
+  "main.aux" 1728062134.04029 4808 63d1e400e5b4efe84c1280f9a4b94ce0 "pdflatex"
+  "main.lof" 1728062134.04029 1237 5174ebec803ef34c8d2b1aa8a5e182ce "pdflatex"
+  "main.out" 1728062134.04029 2238 e5e2d81ba24561566da041d09a210788 "pdflatex"
+  "main.tex" 1728062129.86699 15061 b8e022598e2be870f9d2caab4e576bf7 ""
+  "main.toc" 1728062134.04029 1234 781a4399fbfd68536856555ab0d6c456 "pdflatex"
   (generated)
   "main.aux"
   "main.lof"

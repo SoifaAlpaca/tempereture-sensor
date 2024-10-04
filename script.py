@@ -23,7 +23,15 @@ def NtcTempToVoltage():
     #p.show()
     p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (100k$\Omega$)',show=False,axis_center=(282,0.15))
     p.show()
-    print( str( Vout.evalf(subs={R:8*k,T:Tmax}) ) + " " +str(Vout.evalf(subs={R:8*k,T:Tmin})) )
+
+    VTmax = Vout.evalf(subs={R:8*k,T:Tmax})
+    VTmin = Vout.evalf(subs={R:8*k,T:Tmin})
+    Slope = (VTmax - VTmin)/(Tmax - Tmin)
+    inter = VTmax - Slope*Tmax
+
+    print( "T = 40: "+str( VTmax ) + "\nT = 10: " +str( VTmin ) )
+    print( "Slope : "+str( Slope ) )
+    print( "Interception: "+str( inter ) )
     #print( Vout.evalf(subs={R:100*k,T:Tmax}) - Vout.evalf(subs={R:100*k,T:Tmin}) )
 
 def NtcResToVoltage():
@@ -134,5 +142,5 @@ def lm35():
 
 
 #NtcResToVoltage()
-#NtcTempToVoltage()
-AfeNtc()
+NtcTempToVoltage()
+#AfeNtc()
