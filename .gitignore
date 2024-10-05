@@ -3,3 +3,13 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+
+report/main.aux
+report/main.log
+report/main.pdf
+report/main.synctex.gz
+report/main.toc
+report/main.out
+report/main.lof
+report/main.fls
+report/main.fdb_latexmk
