@@ -196,7 +196,7 @@ explain the requirements and the main objectives of the project
     \end{equation}
 
     In order to find the parameters $A$, $B$ and $C$, its necessary to use 3 points from the datasheet. 
-    The points chosen were the two extremes and the middles point.
+    The points chosen were the two extremes and the middle point.
 
     \begin{equation}
         \begin{cases}
@@ -215,15 +215,6 @@ explain the requirements and the main objectives of the project
         \end{cases}
     \end{equation}
 
-    \textcolor{red}{ Para poder dimensionar o AFE do NTC primeiro é necessario definir o intrevalo de temperaturas em que o circuito irá operar.
-    Foi então decidido que seria adequado um temperatura $T \in [ 10^{\circ}; 40^{\circ} ]$.
-    E pelo datasheet do NTC foi obtido o intrevalo da sua resistencia $R_{NTC} \in [~5,282k~;~19,98k~]$}
-
-    \textcolor{red}{Para usar equacao Steinhart-Hart $\frac{1}{T} = A + B\cdot \ln(R) + C\cdot [\ln(R)]^3$, precisamos de usar 3 pontos para encontrar as constantes $A$, $B$ e $C$.
-    ~
-    $R(T) = R_{NTC} $ onde $T$ é a temperatura em kelvin e $R_{NTC}$ é o valor da resistencia do thermistor \textit{NTC}
-    }
-
     The simplest way to convert the resistance to voltage, is to use a voltage divider circuit.
 
 
@@ -241,11 +232,10 @@ explain the requirements and the main objectives of the project
     $\cdot$ The output voltage is highly non linear, which is a problem because this way some \textit{ADC} resolution is lost.
 
     The first problem is solved through a buffer at the entrance of the \textit{AFE}, 
-    and the second is somewhat mitigated by using a resistor value around $8k \Omega$.
+    and the second is somewhat mitigated by using a resistor value around $8K \Omega$.
     To achieve this value it was used the beta model for the $NTC$ and through a python script,
     the resistor value was iterated until an almost linear output was achieved. 
-    
-    \newpage
+    See NtcTempToVoltage() function in the attached python script.  
     
     \begin{figure}[h]
         \centering
@@ -266,6 +256,19 @@ explain the requirements and the main objectives of the project
     With $R=8k$ the output signal is $V_{out} \in [1.31V;2.36V]$. 
     But the \textit{ADC} as resolution of $12$ bits and a voltage range of $3.3V$, meaning that to have the best resolution possible the signal needs an offset and a gain of $2.87$ and $-1.75$ respectively. 
     It's important to note that a $0.1V$ margin was added to $V_{out}$ in order to ensure that the \textit{AFE} works properly in the specified range.
+    
+    The most obvious way to achieve this values would be with a differential amplifier, 
+    as seen in the following circuit.
+
+     \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.25]{images/AFENTCDiffAmp.png}
+        \caption{NTC's AFE Differential Amplifier}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    Although in the simulation this yields the expected result buy using the 
+    
     This gain and offset was achieved through the following topology.
     
     \begin{figure}[H] 
@@ -332,13 +335,13 @@ explain the requirements and the main objectives of the project
 
     This way the input impedance is high, only one OpAmp and two resistors are used.
     But this comes with the cost of lost resolution. With a gain of $8$ $V_{out}\in[0.8V,3.2V]$
-    $0.8V$ of range in the \textit{ADC} are lost. 
+    $0.8V$ or $24\%$ of range in the \textit{ADC} are lost.
 
 \subsection{Output Relay }
     
     Lastly the \textit{MCU} will turn on and off a fan. For this purpose 
     a relay will open and close the fan circuit. Because the \textit{MCU's I/O} 
-    can drive the relay a \textit{NPN} transistor is use to get enough current.
+    can't drive the relay a \textit{NPN} transistor is use to get enough current.
     Thus the following circuit also needs to be dimensioned. It's important to note
     that the diode is needed to protect the circuit.
     
@@ -355,38 +358,59 @@ explain the requirements and the main objectives of the project
     \end{equation}
 
 
+\newpage
 \section{Simulations}
 \subsection{NTC}
     
     For the purpose of testing the following circuit was designed.
-    At first with linear voltage supply.
+    At first with linear voltage supply since as seen in \hyperref{AFENTC}{NTC's AFE} section, this voltage is almost linear.
 
     \begin{figure}[H] 
         \centering
-        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
-        \caption{Relay circuit.}
+        \includegraphics*[scale = 0.45]{images/NTCLinearTb.png}
+        \caption{Linear supply NTC test circuit.}
         \label{wrap-fig:1}
     \end{figure}
     Producing the following results.
  
     \begin{figure}[H] 
         \centering
-        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
-        \caption{Relay circuit.}
+        \includegraphics*[scale = 0.3]{images/NTCLinearRes.png}
+        \caption{Linear supply NTC test results.}
         \label{wrap-fig:1}
     \end{figure}
 
     Confirming the effectiveness of the \textit{AFE} circuit a more realistic
-    circuit was tested.
+    circuit was then tested.
 
     \begin{figure}[H] 
         \centering
-        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
-        \caption{Relay circuit.}
+        \includegraphics*[scale = 0.45]{images/NTCRealTb.png}
+        \caption{Realistic NTC test circuit.}
+        \label{wrap-fig:1}
+    \end{figure}
+    
+    With the following results.
+    
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.3]{images/NTCRealRes.png}
+        \caption{Realistic NTC test results.}
         \label{wrap-fig:1}
     \end{figure}
 
+    \textcolor{red}{Nao gostei de como ficou a frase }
+    
+    Comparing both results the difference is minimal.
     Confirming that the output is nearly linear in relation to the temperature variation.
+    
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.3]{images/NTCRealLinearComp.png}
+        \caption{NTC Linear and Realistic results comparison.}
+        \label{wrap-fig:1}
+    \end{figure}
+
 
 \subsection{LM35}
 
