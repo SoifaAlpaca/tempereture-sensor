@@ -359,20 +359,20 @@ explain the requirements and the main objectives of the project
 \subsection{NTC}
     
     For the purpose of testing the following circuit was designed.
-    At first with linear voltage supply.
+    At first with linear voltage supply since as seen in \hyperref{AFENTC}{NTC's AFE} section, this voltage is almost linear.
 
     \begin{figure}[H] 
         \centering
-        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
-        \caption{Relay circuit.}
+        \includegraphics*[scale = 0.45]{images/NTCLinearTb.png}
+        \caption{Linear supply NTC test circuit.}
         \label{wrap-fig:1}
     \end{figure}
     Producing the following results.
  
     \begin{figure}[H] 
         \centering
-        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
-        \caption{Relay circuit.}
+        \includegraphics*[scale = 0.3]{images/NTCLinearRes.png}
+        \caption{Linear supply NTC test results.}
         \label{wrap-fig:1}
     \end{figure}
 
@@ -381,12 +381,32 @@ explain the requirements and the main objectives of the project
 
     \begin{figure}[H] 
         \centering
-        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
-        \caption{Relay circuit.}
+        \includegraphics*[scale = 0.45]{images/NTCRealTb.png}
+        \caption{Realistic NTC test circuit.}
+        \label{wrap-fig:1}
+    \end{figure}
+    
+    With following results.
+    
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.3]{images/NTCRealRes.png}
+        \caption{Realistic NTC test results.}
         \label{wrap-fig:1}
     \end{figure}
 
+    \textcolor{red}{Nao gostei de como ficou a frase }
+    
+    Comparing both results the difference is minimal.
     Confirming that the output is nearly linear in relation to the temperature variation.
+    
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.3]{images/NTCRealLinearComp.png}
+        \caption{NTC Linear and Realistic results comparison.}
+        \label{wrap-fig:1}
+    \end{figure}
+
 
 \subsection{LM35}
 
