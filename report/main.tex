@@ -330,9 +330,10 @@ explain the requirements and the main objectives of the project
         \centering
         \includegraphics*[scale = 0.2]{images/AFELM35.png}
         \caption{AFE for the LM35 sensor.}
-        \label{wrap-fig:1}
+        \label{AFELM35}
     \end{figure}
 
+    FALTA DIZER O GANHO COM A RES REAL
     This way the input impedance is high, only one OpAmp and two resistors are used.
     But this comes with the cost of lost resolution. With a gain of $8$ $V_{out}\in[0.8V,3.2V]$
     $0.8V$ or $24\%$ of range in the \textit{ADC} are lost.
@@ -365,12 +366,6 @@ explain the requirements and the main objectives of the project
     For the purpose of testing the following circuit was designed.
     At first with linear voltage supply since as seen in \hyperref{AFENTC}{NTC's AFE} section, this voltage is almost linear.
 
-    \begin{figure}[H] 
-        \centering
-        \includegraphics*[scale = 0.45]{images/NTCLinearTb.png}
-        \caption{Linear supply NTC test circuit.}
-        \label{wrap-fig:1}
-    \end{figure}
     Producing the following results.
  
     \begin{figure}[H] 
@@ -416,20 +411,14 @@ explain the requirements and the main objectives of the project
 
     For this sensor the simulation is straight forward, since the output is linear and proportional to the temperature, 
     it can be simulated with a variable voltage supply. 
-
-    \begin{figure}[H] 
-        \centering
-        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
-        \caption{Relay circuit.}
-        \label{wrap-fig:1}
-    \end{figure}
     
-    Giving the following results, confirming that this approach works properly. 
+    The circuit used to test was the same seen in the \hyperref[AFELM35]{lm35 design section}.
+    Giving the following results, confirming that this approach works as expected. 
     
     \begin{figure}[H] 
         \centering
-        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
-        \caption{Relay circuit.}
+        \includegraphics*[scale = 0.15]{images/LM35AFERes.jpeg}
+        \caption{LM35 AFE test results.}
         \label{wrap-fig:1}
     \end{figure}
 
