@@ -10,7 +10,7 @@
 \contentsline {subsection}{\numberline {3.3}Output Relay }{8}{subsection.3.3}%
 \contentsline {section}{\numberline {4}Simulations}{9}{section.4}%
 \contentsline {subsection}{\numberline {4.1}NTC}{9}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}LM35}{12}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Implementation and Experimental Tests}{13}{section.5}%
-\contentsline {section}{\numberline {6}Results Analysis}{13}{section.6}%
-\contentsline {section}{\numberline {7}Conclusion}{13}{section.7}%
+\contentsline {subsection}{\numberline {4.2}LM35}{10}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Implementation and Experimental Tests}{11}{section.5}%
+\contentsline {section}{\numberline {6}Results Analysis}{11}{section.6}%
+\contentsline {section}{\numberline {7}Conclusion}{11}{section.7}%
