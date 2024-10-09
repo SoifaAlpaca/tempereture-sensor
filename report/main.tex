@@ -422,6 +422,45 @@ explain the requirements and the main objectives of the project
         \label{wrap-fig:1}
     \end{figure}
 
+\subsection{Monte-Carlo Analysis} 
+    
+    The Monte-Carlo simulation is needed for the sake of testing our circuits results variation with the true values of the resistances considering 
+    the normal distribuition of thus values. 
+
+    This values can be written by the following expression.
+    \begin{equation}
+        R_{real} = R_{ideal} * (1 \pm tol)
+    \end{equation}
+    Where the varaible \textit{tol} will depend with the serie of resistances used. 
+    In this work, the serie used is the E12, with a maximum tolerance of 5. So to test the results of
+    the output of the two AFE circuits, thirty simulations were made to assure the reliability of the normal distribuition.
+
+    The results for the NTC AFE are the following.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics*[scale = 0.3]{images/montecarlo ntc.png}
+        \caption{NTC AFE Monte-Carlo test results}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    And the results for the LM35 AFE circuits.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics*[scale = 0.3]{images/montecarlo lm35.png}
+        \caption{LM35 AFE Monte-Carlo test results}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    By analysing the results of the Monte-Carlo simulation of the NTC AFE, firts of all, we can conclude that the
+    slope of the output voltage will be almost the same, the only diference will be in the offset of this function.
+    This variation on the offset will unfortunally alter the final result for all temperatures, but the maximum diviation is just 3ªC, in a worts case senario.
+
+    One other implication of this offset is the values for lower temperatures, where the output would be greater than 3.3V, so the OpAmp will saturate and the voltage will stay at 3.3V.
+
+    For the results of the LM35 AFE Monte-Carlo test, the biggest diference between the thirty simulations is the slope of the output voltage,
+    because the resistances in this circuit only affects it's gain. This consequence is more problematic at higher temperatures, since the input voltage is greater at this values.
 \section{Implementation and Experimental Tests}
 
 \section{Results Analysis}
