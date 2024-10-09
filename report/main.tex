@@ -219,31 +219,36 @@ The sensors used in this project have undesirable output behaviours, so it's nec
 
 \subsection{Operational Amplifier}
 
-    \textcolor{red}{TIVE DE BAZAR JA ACABO
-    Se calhar meter esta seccao noutro sitio}
+    \textcolor{red}{Se calhar meter esta seccao noutro sitio}
+
     For the following AFE's it's important to choose an appropriate Operational Amplifier (OpAmp). 
 
     The desired characteristics are:
 
-    $\cdot$ Rail-to-Rail voltage.
+    $\cdot$ Rail-to-Rail output voltage.
     
     $\cdot$ Low power consumption
     
     $\cdot$ Low supply voltage
 
+    $\cdot$ Low offset voltage
+
     \begin{table}[h]
-    \centering
-    \begin{tabular}{|c|c|c|c|}
-    \hline
-    \textbf{Characteristic}     & \textbf{MCP6001}               & \textbf{TL084}               & \textbf{Undefined Op-Amp} \\ \hline
-    \textbf{Max Output (V)}     & VSS+25mV to VDD-25mV           & (V+)-1.5V                    & X.X                       \\ \hline
-    \textbf{Supply Range (V)}   & 1.8 to 6.0                     & 4.5 to 40                    & X.X                       \\ \hline
-    \textbf{Offset (mV)}        & ±4.5                           & 1                            & X.X                       \\ \hline
-    \textbf{Max Output (mA)}    & ±6 mA (1.8V), ±23 mA (5.5V)    & N/A                          & X.X                       \\ \hline
-    \textbf{Idle Consumption}   & 100 µA                         & 1.4 mA per channel           & X.X                       \\ \hline
-    \end{tabular}
-    \caption{Comparison of Key Parameters for MCP6001, TL084, and Undefined Op-Amp}
+        \centering
+        \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Characteristic}     & \textbf{MCP6001}      & \textbf{TL084}   & \textbf{LM324}  \\ \hline
+        \textbf{Max Output (V)}     &$(V+)-25mV$            & $(V+)$           & $(V+) - 1.5V$   \\ \hline
+        \textbf{Supply Range (V)}   & $1.8$ to $6.0$        & $4.5$ to $40$    & $3V$ to $36V$   \\ \hline
+        \textbf{Offset (mV)}        & $\pm 4.5$             & $1$              & $\pm 3 mV$      \\ \hline
+        \textbf{Max Output (mA)}    & $\pm 23 mA$ $(5.5V)$  & $10 mA$          & $\pm 30 mA$     \\ \hline
+        \textbf{Idle Consumption}   & $100 \mu A $          & $1.4$ $mA$       & $240 \mu A$        \\ \hline
+        \end{tabular}
+        \caption{Comparison of Key Parameters for MCP6001, TL084, and LM324}
     \end{table}
+
+    With the characteristics the only choice for this system is the MCP6001. Even though it has the higher offset voltage and the TL084 has a better Max Output voltage, this is the only one that's able to be supplied with $Vs=3.3V$ and have a Rail-to-Rail output voltage, making it possible to be supply the OpAmp with the MCU and still output the full ADC range.
+
 
 \subsection{Analog FrontEnd (AFE) NTC}
 \label{AFENTC}
@@ -369,7 +374,7 @@ The sensors used in this project have undesirable output behaviours, so it's nec
     $$V_{out} = 10^{-2}\cdot T$$
 
     Hence, in the specified conditions $V_{out}\in[0.1;0.4]$. 
-    To increase resolution as done in \hyperref[ AFENTC ]{NTC's AFE subsection},
+    To increase resolution as done in \hyperref[AFENTC]{NTC's AFE subsection},
     it's needed to add gain and an offset. 
     For this purpose a differential amplifier can be used.  
     
@@ -390,10 +395,9 @@ The sensors used in this project have undesirable output behaviours, so it's nec
         \label{AFELM35}
     \end{figure}
 
-    FALTA DIZER O GANHO COM A RES REAL
     This way the input impedance is high, only one OpAmp and two resistors are used.
-    But this comes with the cost of lost resolution. With a gain of $8$ $V_{out}\in[0.8V,3.2V]$
-    $0.8V$ or $24\%$ of range in the \textit{ADC} are lost.
+    But this comes with the cost of lost resolution. With a gain of $7.8$ $V_{out}\in[0.78V,3.12V]$
+    $0.78V$ or $23.6\%$ of range in the \textit{ADC} are lost.
 
 \subsection{Output Relay }
     
@@ -451,10 +455,7 @@ The sensors used in this project have undesirable output behaviours, so it's nec
         \label{wrap-fig:1}
     \end{figure}
 
-    \textcolor{red}{Nao gostei de como ficou a frase }
-    
-    Comparing both results the difference is minimal.
-    Confirming that the output is nearly linear in relation to the temperature variation.
+    Comparing both results the difference is minimal.Confirming that the output is nearly linear in relation to the temperature variation.
     
     \begin{figure}[H] 
         \centering
@@ -524,6 +525,7 @@ The sensors used in this project have undesirable output behaviours, so it's nec
     In modern electronic systems, power consumption plays a crucial role.This section analyzes the power consumption of the temperature meter system as whole.
 
     For this the following circuit was used.
+
     \textcolor{red}{METAM A FOTO DO CIRCUITO PLS}
     \begin{figure}[H] 
         \centering

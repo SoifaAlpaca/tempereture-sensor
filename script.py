@@ -69,9 +69,9 @@ def AfeNtc():
     vcc         = 3.3
     OffsetGoal  = - 3.53    #Desired Offset
     GainGoal    = 2.92      #Desired Gain
-    A           = 1.2e-3
-    B           = 2.1e-4
-    C           = 1.3e-7
+    A           = 0.001303923920
+    B           = 0.0002143913551
+    C           = 0.00000009659997359
     tolerance   = 1/100 #Resistors tolerance 
     sr          = tolerance/(sqrt(3))
     st          = (5/100)/sqrt(3) #NTC's resistance standard deviation 
@@ -103,6 +103,9 @@ def AfeNtc():
     err = err.evalf(subs={r1:8.2*k,r2:12*k,r3:8.2*k,rf:10*k})
     err = err + 3.3/(4096*2) # adding ADC's error
     print(latex(err.simplify()))
+
+    #Because this values were weird, they were discarded
+    
     p = plot(err ,(ntc,5*k,20*k), xlabel='NTC\'s Resistance ($\\Omega$)', ylabel='$Temperature (°C)$', title='Temperature Error',show=False,axis_center=(5000,0.00040265))
     p.show()
     
