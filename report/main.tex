@@ -154,25 +154,39 @@
 \newpage
 
 \section{Introduction}
-explain the requirements and the main objectives of the project
-\textcolor{red}{
-    Se calhar dizer aqui quais sao as metricas por onde podemos avaliar a nossa solucao
-    Linearidade de output para conseguir aproveitar melhor a resolucao do adc 
-    Consumo
-    erro}
 
-    \begin{figure}[H] 
-        \centering
-        \includegraphics*[scale = 0.5]{images/system-design.png}
-        \caption{Temperature sensing system with 3 three types of sensors.}
-        \label{wrap-fig:1}
-    \end{figure}
+    The primary objective of this project is to design, implement, and evaluate a temperature meter system that integrates three distinct temperature sensors: an NTC thermistor, an LM35 analog sensor, and a DS18B20 digital sensor. The system also incorporates a relay-controlled fan and a graphical \textcolor{red}{ user interface (GUI) for data visualization and control.}. This project aims to compare the performance of each sensor in terms of accuracy while assessing the system's overall power consumption and efficiency.
+
+    \textcolor{red}{ISTO VEIO DO CHAT GPT}
+
+    \label{requirements}
+    For the system Design it's important to define the temperature interval in
+which this system will work, thus it was define as $ T \in [10^\circ C; 40^\circ C]$. 
+
+    explain the requirements and the main objectives of the project
+    \textcolor{red}{
+        Se calhar dizer aqui quais sao as metricas por onde podemos avaliar a nossa solucao
+        Linearidade de output para conseguir aproveitar melhor a resolucao do adc 
+        Consumo
+        erro}
+
+        \begin{figure}[H] 
+            \centering
+            \includegraphics*[scale = 0.5]{images/system-design.png}
+            \caption{Temperature sensing system with 3 three types of sensors.}
+            \label{wrap-fig:1}
+        \end{figure}
 
 \pagebreak
 
 \section{Temperature Sensors}
 \subsection{NTC - Negative Temperature Coefficient}
+        
+    Temperature Coefficient (NTC), means that the sensor resistance decreases as temperature increases. This behavior exhibits a predictable response to temperature variations.
 
+    o que ]e 
+    info da datasheet 
+    tirar o primeiro paragrafo de 3.1
 \subsection{LM35 - Precision Centigrade Temperature Sensor}
 
 \subsection{DS18B20 - Digital Thermometer}
@@ -183,10 +197,7 @@ explain the requirements and the main objectives of the project
 
     \textcolor{red}{A parte onde definimos o intervalo de temperatura nao devia estar aqui pq é para todos os circuitos}
 
-
-    In order to design the \textit{NTF} \textit{AFE} first it's necessary to define the temperature interval
-    in which this circuit will work, thus it was define as $T \in [ 10^{\circ}; 40^{\circ} ]$. 
-    Through the \textit{NTC}'s datasheet the interval of its resistance values is $R_{NTC} \in [~5,282k~;~19,98k~]$
+    Through the \textit{NTC}'s datasheet, according with the  \hyperref[requirements]{system requirements}, the interval of its resistance values is $R_{NTC} \in [~5,282k~;~19,98k~]$
 
     For an accurate reading of the temperature it was used the 
     \hyperref[eq:1]{ \textit{Steinhart-Hart} equation}.
@@ -197,7 +208,7 @@ explain the requirements and the main objectives of the project
 
     In order to find the parameters $A$, $B$ and $C$, its necessary to use 3 points from the datasheet. 
     The points chosen were the two extremes and the middle point.
-
+    \textcolor{red}{DAR FIX AOS ABCS nao sei os valores}
     \begin{equation}
         \begin{cases}
         
@@ -267,9 +278,7 @@ explain the requirements and the main objectives of the project
         \label{wrap-fig:1}
     \end{figure}
 
-    Although in the simulation this yields the expected result buy using the 
-    
-    This gain and offset was achieved through the following topology.
+    Although in the simulation this yields the expected result, using the wheatstone with a precision OpAmp as bridge amplifier, it's possible to achieve gain and offset using less components, yielding better results in terms of power consumption and thermal noise. 
     
     \begin{figure}[H] 
         \centering
@@ -302,6 +311,7 @@ explain the requirements and the main objectives of the project
     In the simulation this values are a bit too close to the limits so in order to have better margins and to use the available resistors
     the final values are  $R_1 = 8.2K \Omega$ and $R_2 = 12K \Omega$.
 
+
     
 
 \subsection{LM35}
@@ -330,9 +340,10 @@ explain the requirements and the main objectives of the project
         \centering
         \includegraphics*[scale = 0.2]{images/AFELM35.png}
         \caption{AFE for the LM35 sensor.}
-        \label{wrap-fig:1}
+        \label{AFELM35}
     \end{figure}
 
+    FALTA DIZER O GANHO COM A RES REAL
     This way the input impedance is high, only one OpAmp and two resistors are used.
     But this comes with the cost of lost resolution. With a gain of $8$ $V_{out}\in[0.8V,3.2V]$
     $0.8V$ or $24\%$ of range in the \textit{ADC} are lost.
@@ -361,16 +372,13 @@ explain the requirements and the main objectives of the project
 \newpage
 \section{Simulations}
 \subsection{NTC}
-    
+
+    \subsubsection{Titulo ?}
+
+    \textcolor{red}{Martim: Achei que se cahlhar separar entre esta sim e montecarlo }
     For the purpose of testing the following circuit was designed.
     At first with linear voltage supply since as seen in \hyperref{AFENTC}{NTC's AFE} section, this voltage is almost linear.
 
-    \begin{figure}[H] 
-        \centering
-        \includegraphics*[scale = 0.45]{images/NTCLinearTb.png}
-        \caption{Linear supply NTC test circuit.}
-        \label{wrap-fig:1}
-    \end{figure}
     Producing the following results.
  
     \begin{figure}[H] 
@@ -411,30 +419,62 @@ explain the requirements and the main objectives of the project
         \label{wrap-fig:1}
     \end{figure}
 
+    \subsubsection{Montecarlo}
+    \label{MonteCarloNTC}
+
+        A Montecarlo simulation is done in order to evaluate the AFE's output in relation to the normal distribution of the resistor values. Giving a sense of how reliable the circuit is.
+    
+        \begin{figure}[H] 
+            \centering
+            \includegraphics*[scale = 0.3]{images/NTCRealLinearComp.png}
+            \caption{NTC Linear and Realistic results comparison.}
+            \label{wrap-fig:1}
+        \end{figure}
+
+        \textcolor{red}{Esta justificacao esta fraquinha}
+        Since the output voltages surpass the defined range, the AFE gain should be lowered and/or the offset augmented. This was not done because this only happens in some cases and this way no resolution is lost. 
 
 \subsection{LM35}
 
     For this sensor the simulation is straight forward, since the output is linear and proportional to the temperature, 
-    it can be simulated with variable voltage supply. 
+    it can be simulated with a variable voltage supply. 
+    
+    The circuit used to test was the same seen in the \hyperref[AFELM35]{lm35 design section}.
+    Giving the following results, confirming that this approach works as expected. 
+    
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.15]{images/LM35AFERes.jpeg}
+        \caption{LM35 AFE test results.}
+        \label{wrap-fig:1}
+    \end{figure}
+    
+    \subsubsection{Montecarlo}
+        For the same reasons explained in section \ref{MonteCarloNTC} a Montecarlo simulation is needed for this AFE.
+    
+        \begin{figure}[H] 
+            \centering
+            \includegraphics*[scale = 0.15]{images/LM35AFERes.jpeg}
+            \caption{LM35 AFE test results.}
+            \label{wrap-fig:1}
+        \end{figure}
 
+
+\subsection{Power Consumption}
+    
+    In modern electronic systems, power consumption plays a crucial role.This section analyzes the power consumption of the temperature meter system as whole.
+        
     \begin{figure}[H] 
         \centering
-        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
-        \caption{Relay circuit.}
+        \includegraphics*[scale = 0.15]{images/LM35AFERes.jpeg}
+        \caption{LM35 AFE test results.}
         \label{wrap-fig:1}
     \end{figure}
+
     
-    Giving the following results.
-    
-    \begin{figure}[H] 
-        \centering
-        \includegraphics*[scale = 0.4]{images/RelayDrive.png}
-        \caption{Relay circuit.}
-        \label{wrap-fig:1}
-    \end{figure}
 
 \section{Implementation and Experimental Tests}
-
+\section{MCU Code}
 \section{Results Analysis}
 
 \section{Conclusion}
