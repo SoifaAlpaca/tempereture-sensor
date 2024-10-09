@@ -41,6 +41,13 @@
     \titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
     %\fancyfoot[C]{\thepage}
 
+%Block diagram
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{block} = [draw, rectangle, 
+    minimum height=2.5em, minimum width=3.5em]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
 %code
 \usepackage[breakable]{tcolorbox}
 
@@ -154,14 +161,16 @@
 \newpage
 
 \section{Introduction}
-explain the requirements and the main objectives of the project
-\textcolor{red}{
-    Se calhar dizer aqui quais sao as metricas por onde podemos avaliar a nossa solucao
-    Linearidade de output para conseguir aproveitar melhor a resolucao do adc 
-    Consumo
-    erro}
 
-    \begin{figure}[H] 
+
+    The primary goal for this project is to design, implement, and evaluate a temperature meter system that integrates three distinct temperature sensors: an NTC thermistor, an LM35 analog sensor, and a DS18B20 digital sensor. The system also incorporates a relay-controlled fan and a graphical \textcolor{red}{ user interface (GUI) for data visualization and control.}. This project aims to compare the performance of each sensor in terms of accuracy while assessing the system's overall power consumption and efficiency.
+
+    \textcolor{red}{ISTO VEIO DO CHAT GPT}
+
+    \label{requirements}
+    For the system Design it's important to define the temperature interval in which this system will work, thus it was define as $ T \in [10^\circ C; 40^\circ C]$. 
+
+   \begin{figure}[H] 
         \centering
         \includegraphics*[scale = 0.5]{images/system-design.png}
         \caption{Temperature sensing system with 3 three types of sensors.}
@@ -176,18 +185,72 @@ the temperature sensors described below were used. This section will describe th
 characteristics of each sensor and why they were chosen for the system design presented in the
 following sections.
 \subsection{NTC - Negative Temperature Coefficient}
+ 
+Negative temperature Coefficient (NTC), means that the sensor resistance decreases as temperature increases. This behavior exhibits a predictable response to temperature variations. Hence we need to develop a system that converts resistance to voltage, so the MCU's ADC can convert it back to ohms and finally to temperature.
+
+~
+
+\begin{tikzpicture}[node distance=2cm]
+
+    % Blocks
+    \node (ntc) [block] {NTC Resistance};
+    \node (ohms) [block, right of=ntc, xshift=2.5cm] {Ohms to Voltage};
+    \node (mcu) [block, right of=ohms, xshift=1.5cm] {MCU};
+    \node (temp) [block, right of=mcu, xshift=1cm] {Temperature};
+
+    % Arrows
+    \draw [arrow] (ntc) -- (ohms);
+    \draw [arrow] (ohms) -- (mcu);
+    \draw [arrow] (mcu) -- (temp);
+
+\end{tikzpicture}
+
 
 \subsection{LM35 - Precision Centigrade Temperature Sensor}
+    The LM35 is a precision integrated-circuit temperature sensor with an output voltage that is linearly proportional to the temperature in Celsius. Unlike other temperature sensors calibrated in Kelvin, the LM35 does not require the user to subtract a constant value to obtain Celsius scaling, simplifying the measurement process. The sensor offers a high level of accuracy, ensuring a typical error of just ±0.5°C at 25°C.
 
 \subsection{DS18B20 - Digital Thermometer}
+
+    Unlike the other sensors this one outputs already the temperature value in digital signal, making it easier to use. This will be helpful in oder to have a control value to measure the quality of the other sensors.
 
 \section{System Design}
 In order to design the system first it's necessary to define the temperature interval in which this circuit will work, thus it was define as $T \in [ 10^{\circ}; 40^{\circ} ]$. 
 The sensors used in this project have undesirable output behaviours, so it's necessary to design an Analog FrontEnd (AFE) for some of them. In this section it will be shown the design choices and calculations for the AFE's.
-\subsection{Analog FrontEnd (AFE) NTC}
-\label{ AFENTC }
 
-    Through the \textit{NTC}'s datasheet the interval of its resistance values is $R_{NTC} \in [~5,282k~;~19,98k~]$
+\subsection{Operational Amplifier}
+
+    \textcolor{red}{TIVE DE BAZAR JA ACABO
+    Se calhar meter esta seccao noutro sitio}
+    For the following AFE's it's important to choose an appropriate Operational Amplifier (OpAmp). 
+
+    The desired characteristics are:
+
+    $\cdot$ Rail-to-Rail voltage.
+    
+    $\cdot$ Low power consumption
+    
+    $\cdot$ Low supply voltage
+
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Characteristic}     & \textbf{MCP6001}               & \textbf{TL084}               & \textbf{Undefined Op-Amp} \\ \hline
+    \textbf{Max Output (V)}     & VSS+25mV to VDD-25mV           & (V+)-1.5V                    & X.X                       \\ \hline
+    \textbf{Supply Range (V)}   & 1.8 to 6.0                     & 4.5 to 40                    & X.X                       \\ \hline
+    \textbf{Offset (mV)}        & ±4.5                           & 1                            & X.X                       \\ \hline
+    \textbf{Max Output (mA)}    & ±6 mA (1.8V), ±23 mA (5.5V)    & N/A                          & X.X                       \\ \hline
+    \textbf{Idle Consumption}   & 100 µA                         & 1.4 mA per channel           & X.X                       \\ \hline
+    \end{tabular}
+    \caption{Comparison of Key Parameters for MCP6001, TL084, and Undefined Op-Amp}
+    \end{table}
+
+\subsection{Analog FrontEnd (AFE) NTC}
+\label{AFENTC}
+
+    According to the \hyperref[requirements]{specification} and through the \textit{NTC}'s datasheet the interval for its resistance values is:
+    
+    $$R_{NTC} \in [~5,282k~;~19,98k~]$$
 
     For an accurate reading of the temperature it was used the 
     \hyperref[eq:1]{ \textit{Steinhart-Hart} equation}.
@@ -198,7 +261,7 @@ The sensors used in this project have undesirable output behaviours, so it's nec
 
     In order to find the parameters $A$, $B$ and $C$, its necessary to use 3 points from the datasheet. 
     The points chosen were the two extremes and the middle point.
-
+    
     \begin{equation}
         \begin{cases}
         
@@ -209,9 +272,9 @@ The sensors used in this project have undesirable output behaviours, so it's nec
         \end{cases}
         \Leftrightarrow
         \begin{cases}
-            A = 1,2 \cdot 10^{-3}\\
-            B = 2,1 \cdot 10^{-4}\\
-            C = 1,3 \cdot 10^{-7}\\
+            A = 1,3092 \cdot 10^{-3}\\
+            B = 2,1439 \cdot 10^{-4}\\
+            C = 9,6600 \cdot 10^{-8}\\
         
         \end{cases}
     \end{equation}
@@ -266,9 +329,8 @@ The sensors used in this project have undesirable output behaviours, so it's nec
         \label{wrap-fig:1}
     \end{figure}
 
-    Although in the simulation this yields the expected result buy using the 
-    
-    This gain and offset was achieved through the following topology.
+    Although in the simulation this yields the expected result, using the wheatstone with a precision OpAmp as bridge amplifier, it's possible to achieve gain and offset using less components, yielding better results in terms of power consumption and thermal noise. 
+
     
     \begin{figure}[H] 
         \centering
@@ -277,12 +339,10 @@ The sensors used in this project have undesirable output behaviours, so it's nec
         \label{wrap-fig:1}
     \end{figure}
 
-    \textcolor{red}{Nao esquecer de fazer referencia ao codigo funcao AfeNtc()}
-
     As already specified the $R_3$ value is $8K~\Omega$ and for the purpose circuit dimensioning the circuit 
-    the positive node of the opamp will be treated as a variable $V_p$.
+    the positive node of the OpAmp will be treated as a variable $V_p$.
 
-    Using python the circuit function $V_{out}(V_p)$:
+    Using python the circuit function $V_{out}(V_p)$(see function AfeNtc() in the attached python script, script.py):
     
     \begin{equation}
         V_{out} = V_p\left[ 1 + R_f\cdot\left(\frac{1}{R_1} + \frac{1}{R_2}\right) \right] - V_{cc}\cdot\frac{R_f}{R_1}
@@ -361,7 +421,7 @@ The sensors used in this project have undesirable output behaviours, so it's nec
 \subsection{NTC}
     
     For the purpose of testing the following circuit was designed.
-    At first with linear voltage supply since as seen in \hyperref{AFENTC}{NTC's AFE} section, this voltage is almost linear.
+    At first with linear voltage supply since as seen in \hyperref[AFENTC]{NTC's AFE} section, this voltage is almost linear.
 
     Producing the following results.
  
@@ -422,15 +482,15 @@ The sensors used in this project have undesirable output behaviours, so it's nec
 \subsection{Monte-Carlo Analysis} 
     
     The Monte-Carlo simulation is needed for the sake of testing our circuits results variation with the true values of the resistances considering 
-    the normal distribuition of thus values. 
+    the normal distribution of those values. 
 
     This values can be written by the following expression.
     \begin{equation}
-        R_{real} = R_{ideal} * (1 \pm tol)
+        R_{real} = R_{ideal} \cdot (1 \pm tol)
     \end{equation}
-    Where the varaible \textit{tol} will depend with the serie of resistances used. 
-    In this work, the serie used is the E12, with a maximum tolerance of 5. So to test the results of
-    the output of the two AFE circuits, thirty simulations were made to assure the reliability of the normal distribuition.
+    Where the variable \textit{tol} will depend with the serie of resistances used. 
+    In this work, the serie used is the E12, with a maximum tolerance of 5\%. So to test the results of
+    the output of the two AFE circuits, thirty simulations were made to assure the reliability of the normal distribution.
 
     The results for the NTC AFE are the following.
 
@@ -450,14 +510,39 @@ The sensors used in this project have undesirable output behaviours, so it's nec
         \label{wrap-fig:1}
     \end{figure}
 
-    By analysing the results of the Monte-Carlo simulation of the NTC AFE, firts of all, we can conclude that the
-    slope of the output voltage will be almost the same, the only diference will be in the offset of this function.
-    This variation on the offset will unfortunally alter the final result for all temperatures, but the maximum diviation is just 3ªC, in a worts case senario.
+    By analysing the results of the Monte-Carlo simulation of the NTC AFE, first of all, we can conclude that the
+    slope of the output voltage will be almost the same, the only difference will be in the offset of this function.
+    This variation on the offset will unfortunately alter the final result for all temperatures, but the maximum deviation is just 3ºC, in a worts case scenario.
 
     One other implication of this offset is the values for lower temperatures, where the output would be greater than 3.3V, so the OpAmp will saturate and the voltage will stay at 3.3V.
 
-    For the results of the LM35 AFE Monte-Carlo test, the biggest diference between the thirty simulations is the slope of the output voltage,
+    For the results of the LM35 AFE Monte-Carlo test, the biggest difference between the thirty simulations is the slope of the output voltage,
     because the resistances in this circuit only affects it's gain. This consequence is more problematic at higher temperatures, since the input voltage is greater at this values.
+
+    \subsection{Power Consumption}
+    
+    In modern electronic systems, power consumption plays a crucial role.This section analyzes the power consumption of the temperature meter system as whole.
+
+    For this the following circuit was used.
+    \textcolor{red}{METAM A FOTO DO CIRCUITO PLS}
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.15]{images/PowerConsumption.jpeg}
+        \caption{System Power Consumption.}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    Yielding the following results: 
+        
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.15]{images/PowerConsumption.jpeg}
+        \caption{System Power Consumption.}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    The power consumption increases with temperature, but with around $2.4 mW$ of maximum consumption the system delivered satisfactory results in this regard.  
+    
 \section{Implementation and Experimental Tests}
 
 In this section the implementation of the system will be described, as well as the results obtained from the experimental tests.
