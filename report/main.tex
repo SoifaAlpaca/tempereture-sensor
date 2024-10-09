@@ -171,6 +171,10 @@ explain the requirements and the main objectives of the project
 \pagebreak
 
 \section{Temperature Sensors}
+For the purpose of implementing the system described in the requirements of the labwork,
+the temperature sensors described below were used. This section will describe the intrinsic
+characteristics of each sensor and why they were chosen for the system design presented in the
+following sections.
 \subsection{NTC - Negative Temperature Coefficient}
 
 \subsection{LM35 - Precision Centigrade Temperature Sensor}
@@ -178,14 +182,11 @@ explain the requirements and the main objectives of the project
 \subsection{DS18B20 - Digital Thermometer}
 
 \section{System Design}
+In order to design the system first it's necessary to define the temperature interval in which this circuit will work, thus it was define as $T \in [ 10^{\circ}; 40^{\circ} ]$. 
+The sensors used in this project have undesirable output behaviours, so it's necessary to design an Analog FrontEnd (AFE) for some of them. In this section it will be shown the design choices and calculations for the AFE's.
 \subsection{Analog FrontEnd (AFE) NTC}
 \label{ AFENTC }
 
-    \textcolor{red}{A parte onde definimos o intervalo de temperatura nao devia estar aqui pq é para todos os circuitos}
-
-
-    In order to design the \textit{NTF} \textit{AFE} first it's necessary to define the temperature interval
-    in which this circuit will work, thus it was define as $T \in [ 10^{\circ}; 40^{\circ} ]$. 
     Through the \textit{NTC}'s datasheet the interval of its resistance values is $R_{NTC} \in [~5,282k~;~19,98k~]$
 
     For an accurate reading of the temperature it was used the 
@@ -216,7 +217,6 @@ explain the requirements and the main objectives of the project
     \end{equation}
 
     The simplest way to convert the resistance to voltage, is to use a voltage divider circuit.
-
 
    \begin{figure}[H] 
         \centering
@@ -251,7 +251,6 @@ explain the requirements and the main objectives of the project
         \end{subfigure}
         \caption{Output Voltage vs Temperature}
     \end{figure}
-
 
     With $R=8k$ the output signal is $V_{out} \in [1.31V;2.36V]$. 
     But the \textit{ADC} as resolution of $12$ bits and a voltage range of $3.3V$, meaning that to have the best resolution possible the signal needs an offset and a gain of $2.87$ and $-1.75$ respectively. 
@@ -301,8 +300,6 @@ explain the requirements and the main objectives of the project
     Setting $R_f = 10K$ the values that satisfy the equation system are $R_1 = 9348 \Omega$ and $R_2 = 11760 \Omega$.
     In the simulation this values are a bit too close to the limits so in order to have better margins and to use the available resistors
     the final values are  $R_1 = 8.2K \Omega$ and $R_2 = 12K \Omega$.
-
-    
 
 \subsection{LM35}
 
@@ -423,6 +420,14 @@ explain the requirements and the main objectives of the project
     \end{figure}
 
 \section{Implementation and Experimental Tests}
+
+In this section the implementation of the system will be described, as well as the results obtained from the experimental tests.
+
+\subsection{Circuit Implementation}
+
+\subsection{Software}
+
+\subsection{Experimental Tests}
 
 \section{Results Analysis}
 

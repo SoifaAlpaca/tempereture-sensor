@@ -8,12 +8,14 @@
 // T = 1/ (A + Bln(R_NTC) + C(ln(R_NTC))^3)
 
 // ESP ADC non-linear issue
-#define ONE_WIRE_BUS 5
-OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature sensors(&oneWire);
 
 #define IN_NTC 4
 #define IN_LM35 2
+#define ONE_WIRE_BUS 5
+
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
 #define VREF 3.3              // 3.3V is the reference voltage of ESP32
 #define ADC_RES 4095          // maximum value of ADC is 4095 (2^12 - 1)
 #define A 0.001303923920      // 0.0012
@@ -27,7 +29,7 @@ DallasTemperature sensors(&oneWire);
 #define GAINNTC (1 + RF * ((1 / (double)R1) + (1 / (double)R2))) // 2.92 //
 #define GAINLM 7.8
 #define T0 273.15
-long int delaymicros = 50; // ms
+long int delaymicros = 10; // ms
 long int previousMicros = 0;
 int contador = 0;
 #define SAMPLES 1000
@@ -75,6 +77,7 @@ void setup()
 
   pinMode(IN_NTC, INPUT);  // Set the ADC pin as input
   pinMode(IN_LM35, INPUT); // Set the ADC pin as input
+  pinMode(ONE_WIRE_BUS, INPUT);
 
   // Start up the library
   sensors.begin();
