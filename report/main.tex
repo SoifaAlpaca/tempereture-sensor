@@ -185,26 +185,28 @@ the temperature sensors described below were used. This section will describe th
 characteristics of each sensor and why they were chosen for the system design presented in the
 following sections.
 \subsection{NTC - Negative Temperature Coefficient}
- 
-Negative temperature Coefficient (NTC), means that the sensor resistance decreases as temperature increases. This behavior exhibits a predictable response to temperature variations. Hence we need to develop a system that converts resistance to voltage, so the MCU's ADC can convert it back to ohms and finally to temperature.
+    
+    Negative temperature Coefficient (NTC), means that the sensor resistance decreases as temperature increases. This behavior exhibits a predictable response to temperature variations. Hence we need to develop a system that converts resistance to voltage, so the MCU's ADC can convert it back to ohms and finally to temperature.
 
-~
+    ~
 
-\begin{tikzpicture}[node distance=2cm]
+    \begin{centering}
+        \begin{tikzpicture}[node distance=2cm]
 
-    % Blocks
-    \node (ntc) [block] {NTC Resistance};
-    \node (ohms) [block, right of=ntc, xshift=2.5cm] {Ohms to Voltage};
-    \node (mcu) [block, right of=ohms, xshift=1.5cm] {MCU};
-    \node (temp) [block, right of=mcu, xshift=1cm] {Temperature};
+            % Blocks
+            \node (ntc) [block] {NTC Resistance};
+            \node (ohms) [block, right of=ntc, xshift=2.5cm] {Ohms to Voltage};
+            \node (mcu) [block, right of=ohms, xshift=1.5cm] {MCU};
+            \node (temp) [block, right of=mcu, xshift=1cm] {Temperature};
+        
+            % Arrows
+            \draw [arrow] (ntc) -- (ohms);
+            \draw [arrow] (ohms) -- (mcu);
+            \draw [arrow] (mcu) -- (temp);
+        
+        \end{tikzpicture}
 
-    % Arrows
-    \draw [arrow] (ntc) -- (ohms);
-    \draw [arrow] (ohms) -- (mcu);
-    \draw [arrow] (mcu) -- (temp);
-
-\end{tikzpicture}
-
+    \end{centering}
 
 \subsection{LM35 - Precision Centigrade Temperature Sensor}
 
@@ -214,9 +216,11 @@ Negative temperature Coefficient (NTC), means that the sensor resistance decreas
 
     Unlike the other sensors this one outputs already the temperature value in digital signal, making it easier to use. This will be helpful in oder to have a control value to measure the quality of the other sensors.
 
+\newpage
 \section{System Design}
-In order to design the system first it's necessary to define the temperature interval in which this circuit will work, thus it was define as $T \in [ 10^{\circ}; 40^{\circ} ]$. 
-The sensors used in this project have undesirable output behaviours, so it's necessary to design an Analog FrontEnd (AFE) for some of them. In this section it will be shown the design choices and calculations for the AFE's.
+
+    In order to design the system first it's necessary to define the temperature interval in which this circuit will work, thus it was define as $T \in [ 10^{\circ}; 40^{\circ} ]$. 
+    The sensors used in this project have undesirable output behaviours, so it's necessary to design an Analog FrontEnd (AFE) for some of them. In this section it will be shown the design choices and calculations for the AFE's.
 
 \subsection{Operational Amplifier}
 
@@ -258,8 +262,8 @@ The sensors used in this project have undesirable output behaviours, so it's nec
     
     $$R_{NTC} \in [~5,282k~;~19,98k~]$$
 
-    For an accurate reading of the temperature it was used the 
-    \hyperref[eq:1]{ \textit{Steinhart-Hart} equation}.
+    For an accurate temperature reading the 
+    \hyperref[eq:1]{ \textit{Steinhart-Hart} equation} was used .
 
     \begin{equation} \label{eq:1}
     \frac{1}{T} = A + B\cdot \ln(R_{NTC}) + C\cdot [\ln(R_{NTC})]^3
@@ -300,12 +304,68 @@ The sensors used in this project have undesirable output behaviours, so it's nec
 
     $\cdot$ The output voltage is highly non linear, which is a problem because this way some \textit{ADC} resolution is lost.
 
-    The first problem is solved through a buffer at the entrance of the \textit{AFE}, 
-    and the second is somewhat mitigated by using a resistor value around $8K \Omega$.
-    To achieve this value it was used the beta model for the $NTC$ and through a python script,
-    the resistor value was iterated until an almost linear output was achieved. 
-    See NtcTempToVoltage() function in the attached python script.  
+    The first problem is solved through a circuit with high impedance at the entrance and the second is somewhat mitigated by using a resistor value around $8K \Omega$. 
+    \textcolor{red}{Vejam se acham se faz sentido ter codigo aqui. ~ To achieve this value, the beta model was used for the $NTC$ and through a python script, the resistor value was iterated until an almost linear output was achieved. See NtcTempToVoltage() function in the attached python script.}
     
+    To achieve this value, the beta model was used for the $NTC$ and through the following python script, the resistor value was iterated until an almost linear output was achieved. 
+
+    \begin{lstlisting}[language=Python]
+        vcc  = 3.3 
+        Tmin = 10 + 273.15  #Minimum temperature in Kelvin
+        Tmax = 40 + 273.15  #Maximum temperature in Kelvin
+        R0   = 10*k         #Resistance at 25C
+        T0   = 298.15       #25c -> K
+        b    = 3965         #beta value (Datasheet)
+        Rntc = R0*( exp( b*( (1/T) - (1/T0) ) ) ) #Beta model equation
+        Vout = Rntc/(Rntc+R)
+        Vout = Vout * vcc
+        
+        p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax), xlabel='Temperature (K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (8k$\\Omega$)',show=False,axis_center=(282,1.3))
+        #p.show()
+        p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax), xlabel='Temperature (K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (100k$\\Omega$)',show=False,axis_center=(282,0.15))
+        #p.show()
+
+        VTmax = Vout.evalf(subs={R:8*k,T:Tmax})
+        VTmin = Vout.evalf(subs={R:8*k,T:Tmin})
+        Slope = (VTmax - VTmin)/(Tmax - Tmin)
+        inter = VTmax - Slope*Tmax
+
+        print( "V(T = 40C): "+str( VTmax ) + " V\nV(T = 10C): " +str( VTmin )+" V" )
+        print( "Slope : "+str( Slope ) )
+        print( "Interception: "+str( inter ) )
+        
+    \end{lstlisting}
+    ~
+    
+    Yielding the following results:
+    
+    ~
+    \begin{comment}
+        vcc  = 3.3 
+    Tmin = 10 + 273.15  #Minimum temperature in Kelvin
+    Tmax = 40 + 273.15  #Maximum temperature in Kelvin
+    R0   = 10*k         #Resistance at 25°C
+    T0   = 298.15       #25°c -> °K
+    b    = 3965         #beta value (Datasheet)
+    Rntc = R0*( exp( b*( (1/T) - (1/T0) ) ) ) #Beta model equation
+    Vout = Rntc/(Rntc+R)
+    Vout = Vout * vcc
+    
+    p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (8k$\\Omega$)',show=False,axis_center=(282,1.3))
+    #p.show()
+    p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (100k$\\Omega$)',show=False,axis_center=(282,0.15))
+    p.show()
+
+    VTmax = Vout.evalf(subs={R:8*k,T:Tmax})
+    VTmin = Vout.evalf(subs={R:8*k,T:Tmin})
+    Slope = (VTmax - VTmin)/(Tmax - Tmin)
+    inter = VTmax - Slope*Tmax
+
+    print( "V(T = 40°C): "+str( VTmax ) + " V\nV(T = 10°C): " +str( VTmin )+" V" )
+    print( "Slope : "+str( Slope ) )
+    print( "Interception: "+str( inter ) )
+    \end{comment}
+
     \begin{figure}[h]
         \centering
         \begin{subfigure}{0.45\textwidth}
@@ -348,8 +408,24 @@ The sensors used in this project have undesirable output behaviours, so it's nec
     As already specified the $R_3$ value is $8K~\Omega$ and for the purpose circuit dimensioning the circuit 
     the positive node of the OpAmp will be treated as a variable $V_p$.
 
-    Using python the circuit function $V_{out}(V_p)$(see function AfeNtc() in the attached python script, script.py):
+    \textcolor{red}{ Vejam se acham que o codigo devia ficar aqui.       Using python the circuit function $V_{out}(V_p)$(see function AfeNtc() in the attached python script, script.py): }
+
+    Using the following python code the circuit function $V_{out}(V_p)$ is found:
+       
+    \begin{lstlisting}[language=Python]
+        
+        vcc         = 3.3
     
+        it = -(vp/r2) + ( vcc - vp )/r1
+        vo = vp - it*rf
+        #Here the circuit's function is found
+        print("Circuit Function: ")
+        print( latex( factor(vo,vp) ) )
+
+    \end{lstlisting}
+    
+    Providing the following expression:
+
     \begin{equation}
         V_{out} = V_p\left[ 1 + R_f\cdot\left(\frac{1}{R_1} + \frac{1}{R_2}\right) \right] - V_{cc}\cdot\frac{R_f}{R_1}
     \end{equation}
