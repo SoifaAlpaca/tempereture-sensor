@@ -242,17 +242,18 @@ following sections.
         \centering
         \begin{tabular}{|c|c|c|c|}
         \hline
-        \textbf{Characteristic}     & \textbf{MCP6001}      & \textbf{TL084}   & \textbf{LM324}  \\ \hline
-        \textbf{Max Output (V)}     &$(V+)-25mV$            & $(V+)$           & $(V+) - 1.5V$   \\ \hline
-        \textbf{Supply Range (V)}   & $1.8$ to $6.0$        & $4.5$ to $40$    & $3V$ to $36V$   \\ \hline
-        \textbf{Offset (mV)}        & $\pm 4.5$             & $1$              & $\pm 3 mV$      \\ \hline
-        \textbf{Max Output (mA)}    & $\pm 23 mA$ $(5.5V)$  & $10 mA$          & $\pm 30 mA$     \\ \hline
-        \textbf{Idle Consumption}   & $100 \mu A $          & $1.4$ $mA$       & $240 \mu A$        \\ \hline
+        \textbf{Characteristic}         & \textbf{MCP6001}      & \textbf{TL084}   & \textbf{LM324}  \\ \hline
+        \textbf{Max Output (V)}         &$(V+)-25mV$            & $(V+)$           & $(V+) - 1.5V$   \\ \hline
+        \textbf{Minimum Output (V)}     &$(V-)+25mV$            & $(V-) + 1.5V$   & $(V-) + 150mV$  \\ \hline
+        \textbf{Supply Range (V)}       & $1.8$ to $6.0$        & $4.5$ to $40$    & $3V$ to $36V$   \\ \hline
+        \textbf{Offset (mV)}            & $\pm 4.5$             & $1$              & $\pm 3 mV$      \\ \hline
+        \textbf{Max Output (mA)}        & $\pm 23 mA$ $(5.5V)$  & $10 mA$          & $\pm 30 mA$     \\ \hline
+        \textbf{Idle Consumption}       & $100 \mu A $          & $1.4$ $mA$       & $240 \mu A$      \\ \hline
         \end{tabular}
         \caption{Comparison of Key Parameters for MCP6001, TL084, and LM324}
     \end{table}
 
-    With the characteristics the only choice for this system is the MCP6001. Even though it has the higher offset voltage and the TL084 has a better Max Output voltage, this is the only one that's able to be supplied with $Vs=3.3V$ and have a Rail-to-Rail output voltage, making it possible to be supply the OpAmp with the MCU and still output the full ADC range.
+    With the characteristics the only choice for this system is the MCP6001. Even though it has the higher offset voltage, this is the only one that's able to be supplied with $Vs=3.3V$ and have a Rail-to-Rail output voltage, making it possible to supply the OpAmp with the MCU and still output the full ADC range.
 
 
 \subsection{Analog FrontEnd (AFE) NTC}
