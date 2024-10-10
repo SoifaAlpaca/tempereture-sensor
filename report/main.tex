@@ -259,6 +259,10 @@ following sections.
 \subsection{Analog FrontEnd (AFE) NTC}
 \label{AFENTC}
 
+    \subsubsection{ Resistance to Temperature Conversion }
+
+    \textcolor{red}{ achei que ficava mais organizado com 2 seccoes se nao gostarem tambem acho que fica bem como estava }
+
     According to the \hyperref[requirements]{specification} and through the \textit{NTC}'s datasheet the interval for its resistance values is:
     
     $$R_{NTC} \in [~5,282k~;~19,98k~]$$
@@ -341,31 +345,6 @@ following sections.
     Yielding the following results:
     
     ~
-    \begin{comment}
-        vcc  = 3.3 
-    Tmin = 10 + 273.15  #Minimum temperature in Kelvin
-    Tmax = 40 + 273.15  #Maximum temperature in Kelvin
-    R0   = 10*k         #Resistance at 25°C
-    T0   = 298.15       #25°c -> °K
-    b    = 3965         #beta value (Datasheet)
-    Rntc = R0*( exp( b*( (1/T) - (1/T0) ) ) ) #Beta model equation
-    Vout = Rntc/(Rntc+R)
-    Vout = Vout * vcc
-    
-    p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (8k$\\Omega$)',show=False,axis_center=(282,1.3))
-    #p.show()
-    p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (100k$\\Omega$)',show=False,axis_center=(282,0.15))
-    p.show()
-
-    VTmax = Vout.evalf(subs={R:8*k,T:Tmax})
-    VTmin = Vout.evalf(subs={R:8*k,T:Tmin})
-    Slope = (VTmax - VTmin)/(Tmax - Tmin)
-    inter = VTmax - Slope*Tmax
-
-    print( "V(T = 40°C): "+str( VTmax ) + " V\nV(T = 10°C): " +str( VTmin )+" V" )
-    print( "Slope : "+str( Slope ) )
-    print( "Interception: "+str( inter ) )
-    \end{comment}
 
     \begin{figure}[h]
         \centering
@@ -385,6 +364,8 @@ following sections.
     With $R=8k$ the output signal is $V_{out} \in [1.31V;2.36V]$. 
     But the \textit{ADC} as resolution of $12$ bits and a voltage range of $3.3V$, meaning that to have the best resolution possible the signal needs an offset and a gain of $2.87$ and $-1.75$ respectively. 
     It's important to note that a $0.1V$ margin was added to $V_{out}$ in order to ensure that the \textit{AFE} works properly in the specified range.
+    
+    \subsubsection{Circuit Implementation}
     
     The most obvious way to achieve this values would be with a differential amplifier, 
     as seen in the following circuit.
