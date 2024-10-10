@@ -44,7 +44,7 @@ def NtcTempToVoltage():
     Vout = Vout * vcc
     
     p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (8k$\\Omega$)',show=False,axis_center=(282,1.3))
-    #p.show()
+    p.show()
     p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (100k$\\Omega$)',show=False,axis_center=(282,0.15))
     p.show()
 
@@ -186,6 +186,6 @@ def lm35():
     """
 
 #NtcResToVoltage()
-#NtcTempToVoltage()
-AfeNtc()
-lm35()
+NtcTempToVoltage()
+#AfeNtc()
+#lm35()
