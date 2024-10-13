@@ -423,8 +423,19 @@ following sections.
 
     Setting $R_f = 10K$ the values that satisfy the equation system are $R_1 = 9348 \Omega$ and $R_2 = 11760 \Omega$.
     In the simulation this values are a bit too close to the limits so in order to have better margins and to use the available resistors
-    the final values are  $R_1 = 8.2K \Omega$ and $R_2 = 12K \Omega$.
+    the final values are  $R_1 = 9.1K \Omega$ and $R_2 = 12K \Omega$.
 
+    The theorical output voltage of the AFE circuit in function of the temperature will have the
+    following graphic.
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.6]{images/outuptafentc.png}
+        \caption{NTC's AFE output voltage}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    From this graphic, the maximum and minimum voltages values can be extracted, so from them, the output voltage 
+    will vary between $V_{outAFE} \in [3.25V;0.15V]$, from 10ºC to 40ºC, theoricaly. These values are within the \textit{ADC} range, so no information will be lost.
 \subsection{LM35}
 
     This integrated-circuit temperature sensor, generates an output
@@ -458,6 +469,60 @@ following sections.
     But this comes with the cost of lost resolution. With a gain of $7.8$ $V_{out}\in[0.78V,3.12V]$
     $0.78V$ or $23.6\%$ of range in the \textit{ADC} are lost.
 
+    Graphically, the output voltage of the LM35 AFE is the following.
+
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.5]{images/Outafelm35.png}
+        \caption{LM35 AFE output voltage.}
+        \label{AFELM35}
+    \end{figure}
+\subsection{Power Consumption}
+
+    In modern electronic systems, power consumption plays a crucial role. This section analyzes the power consumption of the temperature meter system as a whole.
+    So in order to determine the total power consumption, the power of all the resistances present in both AFE circuits were considerd and the theorical 
+    typical consumption of the OpAmps, resulting in the next equation.
+    
+    \begin{equation}
+        P_{total} =  P_{AFENTC} + P_{AFELM35}[W] 
+    \end{equation}
+    Where
+    \begin{equation}
+        P_{AFENTC} = \frac{(V_{CC} - V_{NTC})^2}{R_1} + \frac{(V_{CC} - V_{NTC})^2}{R_3} + \frac{V_{NTC}^2}{R_2} + \frac{(V_{NTC} - V_{Out_{AFENTC}})}{R_5} + I_{OpAmp} \cdot V_{CC} [W]
+    \end{equation}
+    And
+    \begin{equation}
+        P_{AFELM35} = \frac{(V_{LM35} - V_{Out{AFELM35}})^2}{R_b} + \frac{V_{LM35}^2}{R_a} + I_{OpAmp} \cdot V_{CC} [W]
+    \end{equation}
+    
+    The total power will depend on the temperature on a second degree function, since the voltage function by temperature is a first degree, after the linearization.
+    The power consumption graphic for each AFE circuit are the next.
+
+    \begin{figure}[h]
+        \centering
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/PowerNTC.png}
+            \caption{ NTC }
+        \end{subfigure}\hfill
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/PowerLM.png}
+            \caption{ LM35 }
+        \end{subfigure}
+        \caption{NTC and LM35 AFEs power consumption.}
+    \end{figure}
+
+    The total power consumption graphic is then.
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.5]{images/PowerTotal.png}
+        \caption{AFEs total power consumption.}
+    \end{figure}
+
+    From the graphic above, the power consumption describes a parabolic, where the value of the power consumption increases with the 
+    temperature, with a maximum value of $P_{total} = 1.93 mW$. So, both circuits delivered satisfactory results in this regard, 
+    especially, the LM35 AFE circuit, where the consumption was in the order of the microWatts.
 \subsection{Output Relay }
     
     Lastly the \textit{MCU} will turn on and off a fan. For this purpose 
@@ -473,12 +538,18 @@ following sections.
         \label{wrap-fig:1}
     \end{figure}
     \textcolor{red}{PRECISA DE ENCHER CHOURICO AQUI}
+
+    The voltage supply value for this circuit must be different form the AFE circuits that were presented,
+    since the minimum supply voltage to operate the relay is $5V$. And for this voltage, the 
+    current on the inductor present in the relay is $72mA$, according to the datasheet.
+    
+    So, considering $V_{BE} = 0.7V$, and $\beta = 150$ the equation to define the resistance of this circuit is the next.
     \begin{equation}
         R = \frac{I/O_{HIGH}-V_{BE}}{I_r}\cdot \beta\\
-        \Leftrightarrow R = 
+        \Leftrightarrow R = 5416.(6) \Omega
     \end{equation}
 
-
+    The closest value available and the final value of this resistance will be $R = 5.1 k\Omega$.
 \newpage
 \section{Simulations}
 \subsection{NTC}
@@ -500,7 +571,7 @@ following sections.
 
     \begin{figure}[H] 
         \centering
-        \includegraphics*[scale = 0.45]{images/NTCRealTb.png}
+        \includegraphics*[scale = 0.6]{images/NTCRealTb.png}
         \caption{Realistic NTC test circuit.}
         \label{wrap-fig:1}
     \end{figure}
@@ -544,9 +615,9 @@ following sections.
     The Monte-Carlo simulation is needed for the sake of testing our circuits results variation with the true values of the resistances considering 
     the normal distribution of those values. 
 
-    This values can be written by the following expression.
+    This values can be found on the following interval.
     \begin{equation}
-        R_{real} = R_{ideal} \cdot (1 \pm tol)
+        R_{real} \in [R_{ideal} - tol; R_{ideal} + tol] 
     \end{equation}
     Where the variable \textit{tol} will depend with the serie of resistances used. 
     In this work, the serie used is the E12, with a maximum tolerance of 5\%. So to test the results of
@@ -581,28 +652,29 @@ following sections.
 
     \subsection{Power Consumption}
     
-    In modern electronic systems, power consumption plays a crucial role.This section analyzes the power consumption of the temperature meter system as whole.
-
-    For this the following circuit was used.
-
-    \textcolor{red}{METAM A FOTO DO CIRCUITO PLS}
-    \begin{figure}[H] 
-        \centering
-        \includegraphics*[scale = 0.15]{images/PowerConsumption.jpeg}
-        \caption{System Power Consumption.}
-        \label{wrap-fig:1}
-    \end{figure}
-
+    In LTSpice, in order to determine the total power consumption of both AFE circuits, we only need to check the power of the voltage supply.
     Yielding the following results: 
         
     \begin{figure}[H] 
         \centering
-        \includegraphics*[scale = 0.15]{images/PowerConsumption.jpeg}
+        \includegraphics*[scale = 0.3]{images/PowerConsumption.png}
         \caption{System Power Consumption.}
         \label{wrap-fig:1}
     \end{figure}
 
-    The power consumption increases with temperature, but with around $2.4 mW$ of maximum consumption the system delivered satisfactory results in this regard.  
+    The power consumption increases with temperature, confirming the theorical values obtained earlier, but the curve discribed is not a parabola,
+    despite presenting a similar form. After analysing the power consumption of each device, the conclusion was that the OpAmp present in the NTC AFE had a 
+    different behavior from the expected, where instead of having a constant consumption, it had the following graphic.
+ 
+    \begin{figure}[H] 
+        \centering
+        \includegraphics*[scale = 0.3]{images/PowerAmpop.png}
+        \caption{OpAmp NTC AFE Power Consumption.}
+        \label{wrap-fig:1}
+    \end{figure}
+
+    This behavior will not affect negatively the final implementation of the circuit, although the power consumption of the simulated system was sligthly above the expected, 
+    the maximum value reached the $2.37mW$, instead of the $1.93mW$ theoricaly calculated.
     
 \section{Implementation and Experimental Tests}
 
