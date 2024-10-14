@@ -42,9 +42,9 @@ def NtcTempToVoltage():
     Rntc = R0*( exp( b*( (1/T) - (1/T0) ) ) ) #Beta model equation
     Vout = Rntc/(Rntc+R)
     Vout = Vout * vcc
-    
+
     p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (8k$\\Omega$)',show=False,axis_center=(282,1.3))
-    #p.show()
+    p.show()
     p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax), xlabel='Temperature (°K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (100k$\\Omega$)',show=False,axis_center=(282,0.15))
     p.show()
 
@@ -184,8 +184,76 @@ def lm35():
 
     p.show()
     """
+def potdissipada():
+    vontc, vntc, vcc, r1, r2, rf, rntc, pntc, T, T0, plm, vlm, voutlm, ptotal = symbols("V_{out_ntc}, V_{NTC}, V_{cc}, R_1, R_2, R_f, R_{NTC}, P_{NTC_AFE}, T, T_0, P_{LM_AFE}, V_{LM}, V_{out_lm}, P_{Total}")
+   
+    vcc  = 3.3 
+    Tmin = 10 + 273.15  #Minimum temperature in Kelvin
+    Tmax = 40 + 273.15  #Maximum temperature in Kelvin
+    R0   = 10*k         #Resistance at 25°C
+    T0   = 298.15       #25°c -> °K
+    b    = 3965         #beta value (Datasheet)
+    ia = 100e-6
+    r1 = 9100
+    r2 = 12000
+    r3 = 8200
+    rf = 10000
+    ra = 10000
+    rb = 68000
+    rntc = R0*( exp( b*( (1/T) - (1/T0) ) ) ) #Beta model equation
+    vntc = rntc/(rntc+r3)*vcc
+    vlm = 0.01*(T-273.15)
+    
+    it = -(vntc/r2) + ( vcc - vntc )/r1
+    vontc = vntc - it*rf
+
+    voutlm = vlm * (1 + rb/ra)
+
+    pntc = (2*(vcc - vntc)**2/r1 + (vntc)**2/r2 + (vntc - vontc)**2/rf + ia*vcc)*1000
+
+    plm = ((voutlm - vlm)**2/rb + (vlm)**2/ra + ia*vcc)*1000000
+
+    ptotal = pntc + (plm/1000)
+
+    m1 = (1.16-0.72)/(303.15 - 308.15)
+    b1 = 1.16 - m1 * 303.15
+    m = m1 /  (1 + rf * ((1 / r1) + (1 / r2)))
+    bb = (b1 + (3.3 * (rf / r1)))/ (1 + rf * ((1 / r1) + (1 / r2)))
+    vrealntc = m* T + bb
+
+
+
+    print("m b")
+    print(m, bb)
+    #print("minimum power")
+    #print(minimum(ptotal, T))
+
+    p = plot(vrealntc, (T, Tmin, Tmax), xlabel='Temperature (°K)', ylabel='$V_{NTCAFE}$ [V]', title='NTC AFE total energy dissipation',show=False, axis_center=(282,1.3))
+    p.show()
+
+    p = plot(vntc, (T, Tmin, Tmax), xlabel='Temperature (°K)', ylabel='$V_{NTCAFE}$ [V]', title='NTC AFE total energy dissipation',show=False, axis_center=(282,1.1))
+    p.show()
+
+    p = plot(voutlm, (T, Tmin, Tmax), xlabel='Temperature (°K)', ylabel='$V_{LM35AFE}$ [V]', title='LM35 AFE output voltage',show=False, axis_center=(282,0.7))
+    p.show()
+
+    p = plot(vontc, (T, Tmin, Tmax), xlabel='Temperature (°K)', ylabel='$V_{NTCAFE}$ [V]', title='NTC AFE output voltage',show=False, axis_center=(282,0))
+    p.show()
+
+    p = plot(pntc, (T, Tmin, Tmax), xlabel='Temperature (°K)', ylabel='$P_{NTCAFE}$ [mW]', title='NTC AFE power consumption',show=False, axis_center=(282,1.03))
+    p.show()
+
+    p = plot(plm, (T, Tmin, Tmax), xlabel='Temperature (°K)', ylabel='$P_{LMAFE}$ [µW]', title='LM35 AFE power consumption',show=False,axis_center =(282, 335))
+    p.show()
+
+    p = plot(ptotal, (T, Tmin, Tmax), xlabel='Temperature (°K)', ylabel='$P_{NTCAFE}$ [mW]', title='Total power consumption',show=False, axis_center=(282,1.365))
+    p.show()
+
+    oi=(1/(ln(10.70/10)/3965 + 1/298.15))-273.15
+    print(oi)
 
 #NtcResToVoltage()
 #NtcTempToVoltage()
-AfeNtc()
-lm35()
+#AfeNtc()
+#lm35()
+potdissipada()
