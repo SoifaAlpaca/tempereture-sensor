@@ -46,6 +46,8 @@
 %Block diagram
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows}
+% Define custom color lightblue
+\definecolor{lightblue}{RGB}{173, 216, 230}
 \tikzstyle{block} = [draw, rectangle, 
     minimum height=2.5em, minimum width=3.5em]
 \tikzstyle{arrow} = [thick,->,>=stealth]
@@ -173,7 +175,7 @@
 \section{Introduction}
 
 
-    The primary goal for this project is to design, implement, and evaluate a temperature meter system that integrates three distinct temperature sensors: an NTC thermistor, an LM35 analog sensor, and a DS18B20 digital sensor. The system also incorporates a relay-controlled fan and a graphical  user interface (GUI) for data visualization and control. This project aims to compare the performance of each sensor in terms of accuracy while assessing the system's overall power consumption and efficiency.
+    The primary goal for this project is to design, implement, and evaluate a temperature meter system that integrates three distinct temperature sensors: an NTC thermistor, an LM35 analog sensor, and a DS18B20 digital sensor. The system also incorporates a relay-controlled fan and a graphical  user interface (GUI) for data visualization and control. The system block diagram is shown in Figure \ref{fig:design-system}. This project aims to compare the performance of each sensor in terms of accuracy while assessing the system's overall power consumption and efficiency.
 
 
     \label{requirements}
@@ -182,8 +184,8 @@
    \begin{figure}[H] 
         \centering
         \includegraphics*[scale = 0.5]{images/system-design.png}
-        \caption{Temperature sensing system with 3 three types of sensors. \cite{lab_statement}}
-        \label{wrap-fig:1}
+        \caption{Temperature sensing system with 3 three types of sensors block diagram\textsuperscript{\cite{lab_statement}}}
+        \label{fig:design-system}
     \end{figure}
 
 \pagebreak
@@ -232,8 +234,7 @@ following sections.
     The sensors used in this project have undesirable output behaviours, so it's necessary to design an Analog FrontEnd (AFE) for some of them. In this section it will be shown the design choices and calculations for the AFE's.
 
 \subsection{Operational Amplifier}
-
-    \textcolor{red}{Se calhar meter esta seccao noutro sitio}
+          
 
     For the following AFE's it's important to choose an appropriate Operational Amplifier (OpAmp). 
 
@@ -247,7 +248,7 @@ following sections.
 
     $\cdot$ Low offset voltage
 
-    \begin{table}[h]
+    \begin{table}[h]            
         \centering
         \begin{tabular}{|c|c|c|c|}
         \hline
@@ -687,11 +688,68 @@ following sections.
     
 \section{Implementation and Experimental Tests}
 
-In this section the implementation of the system will be described, as well as the results obtained from the experimental tests.
+In this section the implementation of the system will be described, as well as the results obtained from the experimental tests. For the implementation of the circuit was used an MCU, the ESP32, and the software used was the PlatformIO. The code used for the implementation of the system can be found in the attached files.
 
 \subsection{Circuit Implementation}
+As shown in  Figure \ref{fig:circuit-implementation}, the circuit was implemented using the components described in the previous sections. The circuit was powered by the ESP32, with a voltage of $3.3V$. 
+
+The relay was used to mimic the control of a fan, and the sensors were connected to the AFE circuits if needed. The outputs of the sensors were connected to the ADC of the ESP32, and the results were displayed on the GUI.
+\begin{figure}[H] 
+    \centering
+    \includegraphics*[scale = 0.09]{images/circuit_implementation.png}
+    \caption{Circuit Implementation.}
+    \label{fig:circuit-implementation}
+\end{figure}
+
+\subsubsection{DS18B20 circuit}
+
+For the implementation of the DS18B20 sensor, a $4,7K\Omega$ pull-up resistor was used as suggested in the datasheet\textsuperscript{\cite{DS18B20_datasheet}} shown in Figure \ref{fig:ds-block-diagram}. The sensor was connected to the ESP32, and the results were displayed on the GUI. 
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics*[scale = 0.4]{images/Ds_block_diagram.png}
+    \caption{DS18B20 block diagram.}
+    \label{fig:ds-block-diagram}
+\end{figure}
+
+\subsubsection{By-pass Capacitors}
+
+In order to reduce the noise in the ESP32 ADC, bypass $0,1\mu C$ capacitors were used. The capacitors were connected between the ADC input pads and the ground.
+
+The ESP32 ADC is susceptible to high-frequency noise from various sources (e.g., switching power supplies, nearby electromagnetic interference)\textsuperscript{\cite{ESP-IDF-Programming-Guide}}. A bypass capacitor can short these high-frequency noise signals to ground, preventing them from reaching the ADC as a result the ADC reads a cleaner, more stable voltage signal, leading to more accurate conversions.
+
+In this case, the capacitor acts like a low-pass filter: it allows the low-frequency (DC) signal, which is what is being measured, to pass through, but it blocks high-frequency noise by absorbing it. Thus, the ripple is reduced in the voltage being read by the ADC, minimizing noise-related fluctuations.
+
+\subsubsection{D2 switch}
+Due to design constraints, the D2 or GPIO 2 pin of the ESP 32 was used to read the output of the LM35 AFE. This pin as a particularity, it is a strapping pin, which means that it is used to put the ESP32 into bootloader or flashing mode\textsuperscript{\cite{ESP-IDF-Programming-Guide}}.
+
+In order to avoid conflict in serial communications, a switch was added to the circuit, so that the pin could be used to read the output of the LM35 AFE, and then be disconnected when the ESP32 was being flashed or boot mode. 
 
 \subsection{Software}
+The software was developed using C++ and Python. The C++ code was used to program the ESP32, and the Python code was used to develop the GUI. The code used for the implementation of the system can be found in the attached files.
+
+In Figure \ref{fig:flowchart} is shown a flowchart of the software implementation. The ESP32 reads the output of the sensors, and then sends the data to the GUI. The GUI displays the data in real-time, and the user can control the fan using the GUI.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics*[scale = 0.8]{images/jpoliveira.jpg}
+    \caption{Flowchart of the software implementation.}
+    \label{fig:flowchart}
+\end{figure}
+
+The interface was developed using the Tkinter library, which is a standard Python interface to the Tk GUI toolkit. The Tkinter library is easy to use and allows for the creation of simple and intuitive interfaces. In Figure \ref{fig:gui} is shown the GUI developed for the system.
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics*[scale = 0.4]{images/GUI-presentation.png}
+    \caption{GUI developed for the system.}
+    \label{fig:gui}
+\end{figure}
+
+\subsubsection{Multisampling}
+
+In order to improve the accuracy of the temperature readings, a multisampling technique was used. The ESP32 reads the output of the sensors multiple times and then calculates the average value. This technique helps to reduce noise and improve the accuracy of the temperature readings.
+\textcolor{red}{\subsubsection{Temperature Readings Linearization}}
 
 \subsection{Experimental Tests}
 
@@ -700,9 +758,12 @@ In this section the implementation of the system will be described, as well as t
 \section{Conclusion}
 
 \section{Future Work}
-lidar com a atenuação do adc do esp
+lidar com a atenuação do adc do esp, dimensionar para 2V
+
 
 \section{References}
+
+
 
 \bibliography{references} % Add bibliography data file
 

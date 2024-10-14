@@ -86,7 +86,7 @@ double calculateTlm35(double lm35_AFEOut)
   return Tlm35;
 }
 
-void relayControl()
+void relayGUIControl()
 {
   // If the command is complete (ends with newline), process it
   if (command == "RELAY_ON")
@@ -104,6 +104,34 @@ void relayControl()
 
   // Clear the command string for the next command
   command = "";
+}
+
+void relayTempControl(double tempC)
+{
+  if (tempC >= 25.00 && tempC < 40.00)
+  {
+    if (digitalRead(RELAY) == LOW)
+    {
+      digitalWrite(RELAY, HIGH);
+      Serial.println("Relay is ON");
+    }
+    else
+    {
+      Serial.println("Relay is ON");
+    }
+  }
+  else
+  {
+    if (digitalRead(RELAY) == HIGH)
+    {
+      digitalWrite(RELAY, LOW);
+      Serial.println("Relay is OFF");
+    }
+    else
+    {
+      Serial.println("Relay is OFF");
+    }
+  }
 }
 
 void setup()
@@ -159,30 +187,7 @@ void loop()
       Serial.print(",");
       Serial.println(tempC);
 
-      if (tempC >= 25.00 && tempC < 40.00)
-      {
-        if (digitalRead(RELAY) == LOW)
-        {
-          digitalWrite(RELAY, HIGH);
-          Serial.println("Relay is ON");
-        }
-        else
-        {
-          Serial.println("Relay is ON");
-        }
-      }
-      else
-      {
-        if (digitalRead(RELAY) == HIGH)
-        {
-          digitalWrite(RELAY, LOW);
-          Serial.println("Relay is OFF");
-        }
-        else
-        {
-          Serial.println("Relay is OFF");
-        }
-      }
+      relayTempControl(tempC);
 
       contador = 0;
       NTC_read = 0;
@@ -204,7 +209,7 @@ void loop()
     else
     {
       // If the command is complete, process it
-      relayControl();
+      relayGUIControl();
     }
   }
 }
