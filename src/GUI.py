@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import pandas as pd
 
 # Serial connection initialization (Adjust the COM port and baud rate as per your setup)
 ser = serial.Serial('COM6', 115200, timeout=2)
@@ -189,6 +190,14 @@ stop_button.pack(side="left", padx=5)
 start_button = ttk.Button(
     button_frame, text="Start Graph", command=start_graph)
 start_button.pack(side="left", padx=5)
+
+df = pd.DataFrame({
+    'lmdata': ntc_values,
+    'ntcdata': lm_values,
+    'dsdata': ds_values
+})
+
+df.to_csv('data.csv', index=False)
 
 # Handle window close event to terminate the program properly
 root.protocol("WM_DELETE_WINDOW", on_closing)

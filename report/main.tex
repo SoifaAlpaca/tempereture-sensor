@@ -51,7 +51,10 @@
 \tikzstyle{block} = [draw, rectangle, 
     minimum height=2.5em, minimum width=3.5em]
 \tikzstyle{arrow} = [thick,->,>=stealth]
-
+% Tables
+\usepackage{tabularx} 
+\usepackage{booktabs}
+\usepackage{makecell}
 %code
 \usepackage[breakable]{tcolorbox}
 
@@ -247,23 +250,45 @@ following sections.
     $\cdot$ Low supply voltage
 
     $\cdot$ Low offset voltage
+\begin{table}[h]
+    \centering
+    \caption{Comparison of Key Parameters for MCP6001, TL084, and LM324}
+    \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+        \toprule
+        \textbf{Characteristic} & \textbf{MCP6001} & \textbf{TL084} & \textbf{LM324} \\
+        \midrule
+        Max Output (V) & $(V+)-25mV$ & $(V+)$ & $(V+) - 1.5V$ \\
+        \midrule
+        Min Output (V) & $(V-)+25mV$ & $(V-) + 1.5V$ & $(V-) + 150mV$ \\
+        \midrule
+        Supply Range (V) & $1.8V$ to $6.0V$ & $4.5V$ to $40V$ & $3V$ to $36V$ \\
+        \midrule
+        Offset (mV) & $\pm 4.5mV$ & $1mV$ & $\pm 3 mV$ \\
+        \midrule
+        Max Output (mA) & $\pm 23 mA$ $(5.5V)$ & $10 mA$ & $\pm 30 mA$ \\
+        \midrule
+        Idle Consumption & $100 \mu A $ & $1.4$ $mA$ & $240 \mu A$ \\
+        \bottomrule
+    \end{tabularx}
+    \label{tab:opamp}
+\end{table}
 
-    \begin{table}[h]            
-        \centering
-        \begin{tabular}{|c|c|c|c|}
-        \hline
-        \textbf{Characteristic}         & \textbf{MCP6001}      & \textbf{TL084}   & \textbf{LM324}  \\ \hline
-        \textbf{Max Output (V)}         &$(V+)-25mV$            & $(V+)$           & $(V+) - 1.5V$   \\ \hline
-        \textbf{Minimum Output (V)}     &$(V-)+25mV$            & $(V-) + 1.5V$   & $(V-) + 150mV$  \\ \hline
-        \textbf{Supply Range (V)}       & $1.8V$ to $6.0V$      & $4.5V$ to $40V$  & $3V$ to $36V$   \\ \hline
-        \textbf{Offset (mV)}            & $\pm 4.5mV$             & $1mV$              & $\pm 3 mV$      \\ \hline
-        \textbf{Max Output (mA)}        & $\pm 23 mA$ $(5.5V)$  & $10 mA$          & $\pm 30 mA$     \\ \hline
-        \textbf{Idle Consumption}       & $100 \mu A $          & $1.4$ $mA$       & $240 \mu A$      \\ \hline
-        \end{tabular}
-        \caption{Comparison of Key Parameters for MCP6001, TL084, and LM324}
-    \end{table}
+    % \begin{table}[h]            
+    %     \centering
+    %     \begin{tabular}{|c|c|c|c|}
+    %     \hline
+    %     \textbf{Characteristic}         & \textbf{MCP6001}      & \textbf{TL084}   & \textbf{LM324}  \\ \hline
+    %     \textbf{Max Output (V)}         &$(V+)-25mV$            & $(V+)$           & $(V+) - 1.5V$   \\ \hline
+    %     \textbf{Minimum Output (V)}     &$(V-)+25mV$            & $(V-) + 1.5V$   & $(V-) + 150mV$  \\ \hline
+    %     \textbf{Supply Range (V)}       & $1.8V$ to $6.0V$      & $4.5V$ to $40V$  & $3V$ to $36V$   \\ \hline
+    %     \textbf{Offset (mV)}            & $\pm 4.5mV$             & $1mV$              & $\pm 3 mV$      \\ \hline
+    %     \textbf{Max Output (mA)}        & $\pm 23 mA$ $(5.5V)$  & $10 mA$          & $\pm 30 mA$     \\ \hline
+    %     \textbf{Idle Consumption}       & $100 \mu A $          & $1.4$ $mA$       & $240 \mu A$      \\ \hline
+    %     \end{tabular}
+    %     \caption{Comparison of Key Parameters for MCP6001, TL084, and LM324}
+    % \end{table}
 
-    With the characteristics the only choice for this system is the MCP6001. Even though it has the higher offset voltage, this is the only one that's able to be supplied with $Vs=3.3V$ and have a Rail-to-Rail output voltage, making it possible to supply the OpAmp with the MCU and still output the full ADC range.
+    With the characteristics shown in Table \ref{tab:opamp} the only choice for this system is the MCP6001. Even though it has the higher offset voltage, this is the only one that's able to be supplied with $Vs=3.3V$ and have a Rail-to-Rail output voltage, making it possible to supply the OpAmp with the MCU and still output the full ADC range.
 
 
 \subsection{Analog FrontEnd (AFE) NTC}
@@ -701,6 +726,29 @@ The relay was used to mimic the control of a fan, and the sensors were connected
     \label{fig:circuit-implementation}
 \end{figure}
 
+The pins used in the ESP32 can be found in Table \ref{tab:pins}.
+
+
+\begin{table}[h]
+    \centering
+    \caption{ESP32 Pins used in the circuit.}
+    \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+        \toprule
+        \textbf{Signal} & \textbf{Pin name} & \textbf{Pin mode}\\
+        \midrule
+        $V_{out}$ LM35 AFE & D2 & ADC2\_2 (INPUT)\\
+        \midrule
+        $V_{out}$ NTC AFE & D4 & ADC2\_0 (INPUT)\\
+        \midrule
+        $Digital_{out}$ DS18B20 & D5 & GPIO 5 (INPUT)\\
+        \midrule
+        $Digital_{in}$ Relay & D18 & GPIO 18 (OUTPUT)\\
+        \bottomrule
+    \end{tabularx}
+    \label{tab:pins}
+\end{table}
+
+
 \subsubsection{DS18B20 circuit}
 
 For the implementation of the DS18B20 sensor, a $4,7K\Omega$ pull-up resistor was used as suggested in the datasheet\textsuperscript{\cite{DS18B20_datasheet}} shown in Figure \ref{fig:ds-block-diagram}. The sensor was connected to the ESP32, and the results were displayed on the GUI. 
@@ -759,11 +807,6 @@ In order to improve the accuracy of the temperature readings, a multisampling te
 
 \section{Future Work}
 lidar com a atenuação do adc do esp, dimensionar para 2V
-
-
-\section{References}
-
-
 
 \bibliography{references} % Add bibliography data file
 
