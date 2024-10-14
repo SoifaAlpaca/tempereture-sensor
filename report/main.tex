@@ -1,4 +1,6 @@
 \documentclass[12pt]{article}
+
+
 % ----------------------------------------------------------------------
 % Define external packages, language, margins, fonts, new commands 
 % and colors
@@ -92,6 +94,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
+% Add citation commands where necessary
+% Example: \cite{reference_label}
+
+
+% Add bibliography data and style
+\bibliographystyle{IEEEtran}
+
+
 % ----------------------------------------------------------------------
 % Cover
 % ----------------------------------------------------------------------
@@ -163,9 +173,8 @@
 \section{Introduction}
 
 
-    The primary goal for this project is to design, implement, and evaluate a temperature meter system that integrates three distinct temperature sensors: an NTC thermistor, an LM35 analog sensor, and a DS18B20 digital sensor. The system also incorporates a relay-controlled fan and a graphical \textcolor{red}{ user interface (GUI) for data visualization and control.}. This project aims to compare the performance of each sensor in terms of accuracy while assessing the system's overall power consumption and efficiency.
+    The primary goal for this project is to design, implement, and evaluate a temperature meter system that integrates three distinct temperature sensors: an NTC thermistor, an LM35 analog sensor, and a DS18B20 digital sensor. The system also incorporates a relay-controlled fan and a graphical  user interface (GUI) for data visualization and control. This project aims to compare the performance of each sensor in terms of accuracy while assessing the system's overall power consumption and efficiency.
 
-    \textcolor{red}{ISTO VEIO DO CHAT GPT}
 
     \label{requirements}
     For the system Design it's important to define the temperature interval in which this system will work, thus it was define as $ T \in [10^\circ C; 40^\circ C]$. 
@@ -173,7 +182,7 @@
    \begin{figure}[H] 
         \centering
         \includegraphics*[scale = 0.5]{images/system-design.png}
-        \caption{Temperature sensing system with 3 three types of sensors.}
+        \caption{Temperature sensing system with 3 three types of sensors. \cite{lab_statement}}
         \label{wrap-fig:1}
     \end{figure}
 
@@ -636,4 +645,12 @@ In this section the implementation of the system will be described, as well as t
 
 \section{Conclusion}
 
+\section{Future Work}
+lidar com a atenuação do adc do esp
+
+\section{References}
+
+\bibliography{references} % Add bibliography data file
+
+\end{document}
 \end{document}
