@@ -23,6 +23,9 @@
 \bibitem{lab_statement}
 J.~P. Oliveira, ``Lab1 a temperature meter system with 3 sensors, relay and gui,'' 2024.
 
+\bibitem{ESP32_microcontroller}
+A.~S. Alexander~Maier, Yuriy~Vagapov, ``Comparative analysis and practical implementation of the esp32 microcontroller module for the internet of things - scientific figure on researchgate,'' \url{https://www.researchgate.net/figure/Microcontroller-flowchart_fig5_320273388}, 2006.
+
 \bibitem{LM35_datasheet}
 T.~Instruments, ``Lm35 precision centigrade temperature sensors,'' \url{https://www.ti.com/en/ds/DS18B20.pdf}, 2017.
 

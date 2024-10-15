@@ -169,9 +169,12 @@
 
 \tableofcontents % Generates the table of contents
 
+
 \newpage
 
 \listoffigures
+
+\listoftables
 
 \newpage
 
@@ -336,7 +339,7 @@ following sections.
     ~
     
     Yielding the following results:
-    
+    \label{AFENTCOutV}
     ~
 
     \begin{figure}[H]
@@ -415,7 +418,7 @@ following sections.
     \end{figure}
 
     From this graphic, the maximum and minimum voltages values can be extracted, so from them, the output voltage 
-    will vary between $V_{outAFE} \in [3.25V;0.15V]$, from 10ºC to 40ºC, theoretically. These values are within the \textit{ADC} range, so no information will be lost.
+    will vary between $V_{outAFE} \in [0.15V;3.25V]$, from 10ºC to 40ºC, theoretically. These values are within the \textit{ADC} range, so no information will be lost.
 \subsection{LM35}
 
     This integrated-circuit temperature sensor, generates an output
@@ -526,7 +529,6 @@ following sections.
         \caption{Relay circuit.}
         \label{wrap-fig:1}
     \end{figure}
-    \textcolor{red}{PRECISA DE ENCHER CHOURICO AQUI}
 
     The voltage supply value for this circuit must be different form the AFE circuits that were presented,
     since the minimum supply voltage to operate the relay is $5V$. And for this voltage, the 
@@ -544,7 +546,7 @@ following sections.
 \subsection{NTC}
     
     For the purpose of testing the following circuit was designed.
-    At first with linear voltage supply since as seen in \hyperref[AFENTC]{NTC's AFE} section, this voltage is almost linear.
+    At first with linear voltage supply since as seen in \hyperref[AFENTCOutV]{NTC's AFE} section, this voltage is almost linear.
 
     Producing the following results.
  
@@ -574,7 +576,7 @@ following sections.
         \label{wrap-fig:1}
     \end{figure}
 
-    Comparing both results the difference is minimal.Confirming that the output is nearly linear in relation to the temperature variation.
+    Comparing both results the difference is minimal. Confirming that the output is nearly linear in relation to the temperature variation.
     
     \begin{figure}[H] 
         \centering
@@ -601,7 +603,7 @@ following sections.
 
 \subsection{Monte-Carlo Analysis} 
     
-    The Monte-Carlo simulation is needed for the sake of testing our circuits results variation with the true values of the resistances considering 
+    The Monte-Carlo simulation is needed for the sake of testing our circuits resilience to resistor variation, considering 
     the normal distribution of those values. 
 
     This values can be found on the following interval.
@@ -632,9 +634,9 @@ following sections.
 
     By analysing the results of the Monte-Carlo simulation of the NTC AFE, first of all, we can conclude that the
     slope of the output voltage will be almost the same, the only difference will be in the offset of this function.
-    This variation on the offset will unfortunately alter the final result for all temperatures, but the maximum deviation is just 3ºC, in a worts case scenario.
+    This variation on the offset will unfortunately alter the final result for all temperatures, but the maximum deviation is just  $3^\circ C$, in a worts case scenario.
 
-    One other implication of this offset is the values for lower temperatures, where the output would be greater than 3.3V, so the OpAmp will saturate and the voltage will stay at 3.3V.
+    One other implication of this offset is the values for lower temperatures, where the output would be greater than $3.3V$, so the OpAmp will saturate and the voltage will stay at $3.3V$.
 
     For the results of the LM35 AFE Monte-Carlo test, the biggest difference between the thirty simulations is the slope of the output voltage,
     because the resistances in this circuit only affects it's gain. This consequence is more problematic at higher temperatures, since the input voltage is greater at this values.
@@ -651,25 +653,23 @@ following sections.
         \label{wrap-fig:1}
     \end{figure}
 
-    The power consumption increases with temperature, confirming the theorical values obtained earlier, but the curve discribed is not a parabola,
-    despite presenting a similar form. After analysing the power consumption of each device, the conclusion was that the OpAmp present in the NTC AFE had a 
-    different behavior from the expected, where instead of having a constant consumption, it had the following graphic.
+    The power consumption increases with temperature, confirming the theoretical values obtained earlier, but the curve described is not a parabola, despite presenting a similar form. After analysing the power consumption of each device, the conclusion was that the OpAmp present in the NTC's AFE had a different behavior from the expected, where instead of having a constant consumption, it presented the behavior represented in the figure \ref{OpAmpNTC}.
  
     \begin{figure}[H] 
         \centering
         \includegraphics*[scale = 0.3]{images/PowerAmpop.png}
         \caption{OpAmp NTC AFE Power Consumption.}
-        \label{wrap-fig:1}
+        \label{OpAmpNTC}
     \end{figure}
 
-    This behavior will not affect negatively the final implementation of the circuit, although the power consumption of the simulated system was sligthly above the expected, 
-    the maximum value reached the $2.37mW$, instead of the $1.93mW$ theoretically calculated.
+    This behavior will not affect negatively the final implementation of the circuit, although the power consumption of the simulated system was slightly above the expected, the maximum value reached the $2.37mW$, instead of the $1.93mW$ theoretically calculated.
     
 \section{Implementation and Experimental Tests}
 
 In this section the implementation of the system will be described, as well as the results obtained from the experimental tests. For the implementation of the circuit was used an MCU, the ESP32, and the software used was the PlatformIO. The code used for the implementation of the system can be found in the attached files.
 
 \subsection{Circuit Implementation}
+
 As shown in  Figure \ref{fig:circuit-implementation}, the circuit was implemented using the components described in the previous sections. The circuit was powered by the ESP32, with a voltage of $3.3V$. 
 
 The relay was used to mimic the control of a fan, and the sensors were connected to the AFE circuits if needed. The outputs of the sensors were connected to the ADC of the ESP32, and the results were displayed on the GUI.
@@ -755,12 +755,40 @@ In order to improve the accuracy of the temperature readings, a multisampling te
 
 \subsection{Experimental Tests}
 
+    The experimental tests were conducted to evaluate the performance and accuracy of the temperature sensing system. The primary objective was to verify the functionality of the three different sensors—NTC thermistor, LM35, and DS18B20—and compare their responses under controlled temperature changes.
+
+    To simulate real-world temperature variations, the sensors were placed together in close proximity, and hot air was used to gradually heat them. This method allowed us to observe how each sensor responded to increasing temperatures in real time and to measure the accuracy of the readings obtained from the ESP32’s ADC. The system's outputs were displayed on the graphical user interface (GUI), providing a direct comparison between the temperature readings from the different sensors.
+
+
+
 \section{Results Analysis}
 
 \section{Conclusion}
 
 \section{Future Work}
+\subsection{ADC attenuation }
+
+One area for further enhancement is the handling of the Esp32's ADC weaknesses. In the current setup, the ESP32's ADC is used to read analog sensor signals. However the ESP32 reference voltage is around $1.1V$, meaning that for higher voltage readings the signal is attenuated, this attenuation makes the ADC non linear. 
+Knowing this we could've adapted the voltage range for the AFEs so we could have avoided this non-linear zones. 
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics*[scale = 0.4]{images/ADC-linearity-test-at-12-bit-resolution.png}
+    \caption{ADC linearity\cite{ESP32_microcontroller}.}
+    \label{fig:ADClinear}
+\end{figure}
+
+As represented in figure \ref{fig:ADClinear}, the most appropriate attenuation for this project would be 6 db's for the biggest where the ADC is linear ADC.
+
+\subsection{ Calibration methods }
+
+Another critical improvement for future iterations is the implementation calibration methods to ensure greater accuracy across all temperature ranges. Calibration is essential because even with optimal ADC settings, external factors like component tolerances, temperature drift, and power supply variations can introduce errors in the system.
+
+
 lidar com a atenuação do adc do esp, dimensionar para 2V
+experimentar uma linearização do valor do ntc com a relação tensão temp
+para usar o stein hart tirar tres pontos experimentais para o modelo ser mais aproximado ao real 
+(metodos de calibração)lidar com a atenuação do adc do esp, dimensionar para 2V
 
 \bibliography{references} % Add bibliography data file
 
