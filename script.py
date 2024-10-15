@@ -253,7 +253,7 @@ def potdissipada():
     print(oi)
 
 #NtcResToVoltage()
-#NtcTempToVoltage()
+NtcTempToVoltage()
 #AfeNtc()
 #lm35()
-potdissipada()
+#potdissipada()
