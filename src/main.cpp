@@ -23,7 +23,7 @@ DallasTemperature sensors(&oneWire);
 #define R3 8200
 #define VOFFSET (VREF * (RF / (double)R1))                       // 3.53
 #define GAINNTC (1 + RF * ((1 / (double)R1) + (1 / (double)R2))) // 2.92 //
-#define GAINLM 7.3                                               // ajustado no digital era 7.8 no dimensionamento
+#define GAINLM 7.5                                               // 7.8 valor real                                               // ajustado no digital era 7.8 no dimensionamento
 #define T0 273.15
 #define SAMPLES 6000
 long int delaymicros = 10; // ms
@@ -42,8 +42,10 @@ double Tlm35 = 0;
 #define B 0.0001924505126    // 0.00021
 #define C 0.0000002520860441 // 0.00000013
 
+String relay_status = "RELAY_OFF";
+String relay_mode = "AUTIMATIC";
 // Command strings
-String command = "";
+String command = "RELAY_OFF";
 
 double calculateTntc(double ntc_AFEOut)
 {
@@ -54,7 +56,6 @@ double calculateTntc(double ntc_AFEOut)
   double Vntc = (ntc_AFEOut + VOFFSET) / GAINNTC;
   // Serial.print("\nVntc: ");
   // Serial.println(Vntc);
-
   double Rntc = (Vntc * R3) / (VREF - Vntc);
   // Serial.print("\nRntc: ");
   // Serial.println(Rntc);
@@ -74,6 +75,7 @@ double calculateTntc(double ntc_AFEOut)
 
   // Serial.print("\nTntc: ");
   // Serial.println(Tntc);
+  // Tntc = ((ntc_AFEOut + 3.6264) / 2.932 + 0.0350474) / -12.2884;
   return TLin;
 }
 
@@ -86,52 +88,72 @@ double calculateTlm35(double lm35_AFEOut)
   return Tlm35;
 }
 
-void relayGUIControl()
-{
-  // If the command is complete (ends with newline), process it
-  if (command == "RELAY_ON")
-  {
-    // Turn the relay ON
-    digitalWrite(RELAY, HIGH);
-    Serial.println("Relay is ON");
-  }
-  else if (command == "RELAY_OFF")
-  {
-    // Turn the relay OFF
-    digitalWrite(RELAY, LOW);
-    Serial.println("Relay is OFF");
-  }
-
-  // Clear the command string for the next command
-  command = "";
-}
-
 void relayTempControl(double tempC)
 {
   if (tempC >= 25.00 && tempC < 40.00)
   {
-    if (digitalRead(RELAY) == LOW)
+
+    if (relay_status == "RELAY_OFF")
     {
       digitalWrite(RELAY, HIGH);
-      Serial.println("Relay is ON");
+      // Serial.println("Relay is ON");
+      relay_status = "RELAY_ON";
+      delay(50);
     }
     else
     {
-      Serial.println("Relay is ON");
+      // Serial.println("Relay is ON");
     }
   }
   else
   {
-    if (digitalRead(RELAY) == HIGH)
+    if (relay_status == "RELAY_ON")
     {
       digitalWrite(RELAY, LOW);
-      Serial.println("Relay is OFF");
+      // Serial.println("Relay is OFF");
+      relay_status = "RELAY_OFF";
+      delay(50);
     }
     else
     {
-      Serial.println("Relay is OFF");
+      // Serial.println("Relay is OFF");
     }
   }
+}
+
+void relayGUIControl()
+{
+  if (command == "AUTOMATIC")
+  {
+    relayTempControl(tempC);
+    // Serial.println("Automatic mode");
+    relay_mode = "AUTOMATIC";
+  }
+  if (command == "MANUAL")
+  {
+    relay_mode = "MANUAL";
+    // Serial.println("Manual mode");
+  }
+  if (command == "RELAY_ON")
+  {
+    // Turn the relay ON
+    digitalWrite(RELAY, HIGH);
+
+    //  Serial.println("Relay is ON");
+    relay_status = "RELAY_ON";
+    delay(1000);
+  }
+  if (command == "RELAY_OFF")
+  {
+    // Turn the relay OFF
+    digitalWrite(RELAY, LOW);
+    delay(50);
+    //  Serial.println("Relay is OFF");
+    relay_status = "RELAY_OFF";
+    delay(1000);
+  }
+  // Clear the command string for the next command
+  command = "";
 }
 
 void setup()
@@ -146,7 +168,9 @@ void setup()
 
   // Start up the library
   sensors.begin();
-
+  relay_status = "RELAY_OFF";
+  command = "RELAY_OFF";
+  relay_mode = "MANUAL";
   Serial.begin(115200);
   // put your setup code here, to run once:
 }
@@ -187,7 +211,7 @@ void loop()
       Serial.print(",");
       Serial.println(tempC);
 
-      relayTempControl(tempC);
+      // relayTempControl(tempC);
 
       contador = 0;
       NTC_read = 0;
