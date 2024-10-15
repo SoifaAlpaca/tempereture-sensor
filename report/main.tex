@@ -370,7 +370,7 @@ following sections.
         \centering
         \includegraphics*[scale = 0.25]{images/AFENTCDiffAmp.png}
         \caption{NTC's AFE Differential Amplifier}
-        \label{wrap-fig:1}
+        \label{difafentc}
     \end{figure}
 
     Although in the simulation this yields the expected result, using the wheatstone with a precision OpAmp as bridge amplifier, it's possible to achieve gain and offset using less components, yielding better results in terms of power consumption and thermal noise. 
@@ -380,7 +380,7 @@ following sections.
         \centering
         \includegraphics*[scale = 0.25]{images/AFENTC.png}
         \caption{NTC's AFE topology}
-        \label{wrap-fig:1}
+        \label{AFENTC}
     \end{figure}
 
     As already specified the $R_3$ value is $8K~\Omega$ and for the purpose circuit dimensioning the circuit 
@@ -414,7 +414,7 @@ following sections.
         \centering
         \includegraphics*[scale = 0.6]{images/outuptafentc.png}
         \caption{NTC's AFE output voltage}
-        \label{wrap-fig:1}
+        \label{NTCAFEgraph}
     \end{figure}
 
     From this graphic, the maximum and minimum voltages values can be extracted, so from them, the output voltage 
@@ -435,7 +435,7 @@ following sections.
         \centering
         \includegraphics*[scale = 0.3]{images/DiffAmpLM35.png}
         \caption{LM35 Differential Amplifier.}
-        \label{wrap-fig:1}
+        \label{difafelm}
     \end{figure}
 
     Although this circuit achieves the expected output, the amount of components,
@@ -458,7 +458,7 @@ following sections.
         \centering
         \includegraphics*[scale = 0.5]{images/Outafelm35.png}
         \caption{LM35 AFE output voltage.}
-        \label{AFELM35}
+        \label{AFELM35graph}
     \end{figure}
 \subsection{Power Consumption}
 
@@ -499,6 +499,7 @@ following sections.
             \caption{Total power consumption.}
         \end{subfigure}
         \caption{NTC and LM35 AFEs power consumption.}
+        \label{powerteo}
     \end{figure}
 
     \begin{comment}
@@ -527,7 +528,7 @@ following sections.
         \centering
         \includegraphics*[scale = 0.4]{images/RelayDrive.png}
         \caption{Relay circuit.}
-        \label{wrap-fig:1}
+        \label{relaycircuit}
     \end{figure}
 
     The voltage supply value for this circuit must be different form the AFE circuits that were presented,
@@ -598,7 +599,7 @@ following sections.
         \centering
         \includegraphics*[scale = 0.15]{images/LM35AFERes.jpeg}
         \caption{LM35 AFE test results.}
-        \label{wrap-fig:1}
+        \label{LM35AFERes}
     \end{figure}
 
 \subsection{Monte-Carlo Analysis} 
@@ -612,7 +613,7 @@ following sections.
     \end{equation}
     Where the variable \textit{tol} will depend with the serie of resistances used. 
     In this work, the serie used is the E12, with a maximum tolerance of 5\%. So to test the results of
-    the output of the two AFE circuits, thirty simulations were made to assure the reliability of the normal distribution.
+    the output of the two AFE circuits, one hundred simulations were made to assure the reliability of the normal distribution.
 
     The results for the NTC AFE are the following.
 
@@ -620,7 +621,7 @@ following sections.
         \centering
         \includegraphics*[scale = 0.3]{images/montecarlo ntc.png}
         \caption{NTC AFE Monte-Carlo test results}
-        \label{wrap-fig:1}
+        \label{montecarlontc}
     \end{figure}
 
     And the results for the LM35 AFE circuits.
@@ -629,7 +630,7 @@ following sections.
         \centering
         \includegraphics*[scale = 0.3]{images/montecarlo lm35.png}
         \caption{LM35 AFE Monte-Carlo test results}
-        \label{wrap-fig:1}
+        \label{montecarlolm}
     \end{figure}
 
     By analysing the results of the Monte-Carlo simulation of the NTC AFE, first of all, we can conclude that the
@@ -641,16 +642,78 @@ following sections.
     For the results of the LM35 AFE Monte-Carlo test, the biggest difference between the thirty simulations is the slope of the output voltage,
     because the resistances in this circuit only affects it's gain. This consequence is more problematic at higher temperatures, since the input voltage is greater at this values.
 
+    To better visualize the variation in the output voltage of both systems at the maximum, minimum and average temperature, a more specific simulation was used, where the value of the $R_{NTC}$ and the
+    $V_{LM35}$ were fixed for the temperature tested.
+    So first of all, for 10ºC, the results are represented in figure \ref{10ºC - montecarlo}.
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/vntc10.png}
+            \caption{ $V_{OutAFENtc}$ }
+        \end{subfigure}\hfill
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/vlm10.png}
+            \caption{$V_{OutAFELm35}$}
+        \end{subfigure}
+        \caption{Output Voltage variations at 10ºC}
+        \label{10ºC - montecarlo}
+    \end{figure}
+
+    For 25ºC, in figure \ref{25ºC - montecarlo}.
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/vntc25.png}
+            \caption{ $V_{OutAFENtc}$ }
+        \end{subfigure}\hfill
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/vlm25.png}
+            \caption{$V_{OutAFELm35}$}
+        \end{subfigure}
+        \caption{Output Voltage variations at 25ºC}
+        \label{25ºC - montecarlo}
+    \end{figure}
+
+    And finally, for the maximum temperature of 40ºC, the results are shown in figure \ref{40ºC - montecarlo}
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/vntc40.png}
+            \caption{ $V_{OutAFENtc}$ }
+        \end{subfigure}\hfill
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/vlm40.png}
+            \caption{$V_{OutAFELm35}$}
+        \end{subfigure}
+        \caption{Output Voltage variations at 40ºC}
+        \label{40ºC - montecarlo}
+    
+
+    \end{figure}
+    
+    By analysing the previous figures, the hypothesis presented before about the variations in the output voltage being related with the 
+    temperature in the LM35 AFE is confirmed,
+    but another conclusion may also be taken, the higher the voltage, higher the variation of this value.
+
     \subsection{Power Consumption}
     
     In LTSpice, in order to determine the total power consumption of both AFE circuits, we only need to check the power of the voltage supply.
-    Yielding the following results: 
+    Yielding the following results, represented in figure \ref{powersim}.
         
     \begin{figure}[H] 
         \centering
         \includegraphics*[scale = 0.3]{images/PowerConsumption.png}
         \caption{System Power Consumption.}
-        \label{wrap-fig:1}
+        \label{powersim}
     \end{figure}
 
     The power consumption increases with temperature, confirming the theoretical values obtained earlier, but the curve described is not a parabola, despite presenting a similar form. After analysing the power consumption of each device, the conclusion was that the OpAmp present in the NTC's AFE had a different behavior from the expected, where instead of having a constant consumption, it presented the behavior represented in the figure \ref{OpAmpNTC}.
@@ -789,6 +852,8 @@ lidar com a atenuação do adc do esp, dimensionar para 2V
 experimentar uma linearização do valor do ntc com a relação tensão temp
 para usar o stein hart tirar tres pontos experimentais para o modelo ser mais aproximado ao real 
 (metodos de calibração)lidar com a atenuação do adc do esp, dimensionar para 2V
+
+\newpage
 
 \bibliography{references} % Add bibliography data file
 
