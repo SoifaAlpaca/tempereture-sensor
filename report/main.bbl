@@ -7,8 +7,7 @@
 \providecommand{\BIBentrySTDinterwordspacing}{\spaceskip=0pt\relax}
 \providecommand{\BIBentryALTinterwordstretchfactor}{4}
 \providecommand{\BIBentryALTinterwordspacing}{\spaceskip=\fontdimen2\font plus
-\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
-  \fontdimen4\font\relax}
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus \fontdimen4\font\relax}
 \providecommand{\BIBforeignlanguage}[2]{{%
 \expandafter\ifx\csname l@#1\endcsname\relax
 \typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
@@ -22,16 +21,15 @@
 \BIBdecl
 
 \bibitem{lab_statement}
-J.~P. Oliveira, ``Lab1 a temperature meter system with 3 sensors, relay and
-  gui,'' 2024.
+J.~P. Oliveira, ``Lab1 a temperature meter system with 3 sensors, relay and gui,'' 2024.
+
+\bibitem{LM35_datasheet}
+T.~Instruments, ``Lm35 precision centigrade temperature sensors,'' \url{https://www.ti.com/en/ds/DS18B20.pdf}, AUGUST 1999 – REVISED DECEMBER 2017.
 
 \bibitem{DS18B20_datasheet}
-M.~Integrated, ``Ds18b20 programmable resolution 1-wire digital thermometer,''
-  \url{https://datasheets.maximintegrated.com/en/ds/DS18B20.pdf}, 2019.
+M.~Integrated, ``Ds18b20 programmable resolution 1-wire digital thermometer,'' \url{https://datasheets.maximintegrated.com/en/ds/DS18B20.pdf}, 2019.
 
 \bibitem{ESP-IDF-Programming-Guide}
-E.~Systems, ``Esp-idf programming guide,''
-  \url{https://docs.espressif.com/projects/esp-idf/en/latest/esp32/index.html},
-  2024.
+E.~Systems, ``Esp-idf programming guide,'' \url{https://docs.espressif.com/projects/esp-idf/en/latest/esp32/index.html}, 2024.
 
 \end{thebibliography}

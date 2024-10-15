@@ -200,10 +200,10 @@ characteristics of each sensor and why they were chosen for the system design pr
 following sections.
 \subsection{NTC - Negative Temperature Coefficient}
     
-    Negative temperature Coefficient (NTC), means that the sensor resistance decreases as temperature increases. This behavior exhibits a predictable response to temperature variations. Hence we need to develop a system that converts resistance to voltage, so the MCU's ADC can convert it back to ohms and finally to temperature.
+    Negative temperature Coefficient (NTC), means that the sensor resistance decreases as temperature increases. This behavior exhibits a predictable response to temperature variations. Hence we need to develop a system that converts resistance to voltage, so the MCU's ADC can convert it back to ohms and finally to temperature. As represented in figure \ref{fig:NTCBlock}.
 
-    ~
-
+    
+    \begin{figure}[H]   
     \begin{centering}
         \begin{tikzpicture}[node distance=2cm]
 
@@ -219,12 +219,16 @@ following sections.
             \draw [arrow] (mcu) -- (temp);
         
         \end{tikzpicture}
+        
+        \caption{ NTC's block diagram }
+        \label{fig:NTCBlock}
 
     \end{centering}
+    \end{figure}
 
 \subsection{LM35 - Precision Centigrade Temperature Sensor}
 
-    The LM35 is a precision integrated-circuit temperature sensor with an output voltage that is linearly proportional to the temperature in Celsius, making it more straight forward to use. Unlike other temperature sensors calibrated in Kelvin, the LM35 does not require the user to subtract a constant value to obtain Celsius scaling, simplifying the measurement process. The sensor offers a high level of accuracy, ensuring a typical error of just $\pm 0.5^\circ C$ at $25^\circ C$.
+    The LM35 is a precision integrated-circuit temperature sensor with an output voltage that is linearly proportional to the temperature in Celsius, making it more straight forward to use. Unlike other temperature sensors calibrated in Kelvin, the LM35 does not require the user to subtract a constant value to obtain Celsius scaling, simplifying the measurement process. The sensor offers a high level of accuracy, ensuring a typical error of just $\pm 0.5^\circ C$ at $25^\circ C$ \cite{LM35_datasheet} .
 
 \subsection{DS18B20 - Digital Thermometer}
 
