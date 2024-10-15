@@ -814,7 +814,6 @@ The interface was developed using the Tkinter library, which is a standard Pytho
 \subsubsection{Multisampling}
 
 In order to improve the accuracy of the temperature readings, a multisampling technique was used. The ESP32 reads the output of the sensors multiple times and then calculates the average value. This technique helps to reduce noise and improve the accuracy of the temperature readings.
-\textcolor{red}{\subsubsection{Temperature Readings Linearization}}
 
 \subsection{Experimental Tests}
 
@@ -822,13 +821,70 @@ In order to improve the accuracy of the temperature readings, a multisampling te
 
     To simulate real-world temperature variations, the sensors were placed together in close proximity, and hot air was used to gradually heat them. This method allowed us to observe how each sensor responded to increasing temperatures in real time and to measure the accuracy of the readings obtained from the ESP32's ADC. The system's outputs were displayed on the graphical user interface (GUI), providing a direct comparison between the temperature readings from the different sensors.
 
+        
+    \subsubsection{ Sensors }
 
+        Firstly we test without changing the temperature, this way the difference between readings is more obvious.
+        
+        \begin{figure}[H] 
+            \centering
+            \includegraphics*[scale = 0.5]{images/TempFixTest.png}
+            \caption{Sensor readings for fix temperature.}
+            \label{fig:FixTemp}
+        \end{figure}
+
+        \textcolor{red}{ADICIONAR TEXTO}
+        
+        After that the sensors were put together and heated as shown in figure \ref{fig:VarTemp}.
+
+        \begin{figure}[H] 
+            \centering
+            \includegraphics*[scale = 0.5]{images/VarTempTest.png}
+            \caption{Sensor readings for temperature variation.}
+            \label{fig:VarTemp}
+        \end{figure}
+
+        Because the sensors have different mass and dissipate heat at different rates, here the temperature will vary between them by a large margin. Analysing the graph the ntc reacts faster and the digital sensor is the slowest.  
+
+
+    \subsubsection{ Relay }
+        In order to test if the relay would open and close according to the Digital sensor reading, it was heated and then cooled. Figure \ref{fig:RelayAuto} shows the sensor readings. 
+
+        \begin{figure}[H] 
+            \centering
+            \includegraphics*[scale = 0.4]{images/RelayAutoTest.png}
+            \caption{Temperature  for Relay Test.}
+            \label{fig:RelayAuto}
+        \end{figure}
+
+        To show the relay working, a LED circuit was opened and closed by the relay. Figure \ref{fig:RelayClosed} shows the circuit at peak temperature and figure \ref{fig:RelayOpen} at the lowest temperature. Confirming our goal was achieved.         
+
+
+        \begin{figure}[H] 
+            \centering
+            \begin{subfigure}{0.45\textwidth}
+                \includegraphics*[scale = 0.05]{images/RelayOff.jpeg}
+                \caption{Circuit Open.}
+                \label{fig:RelayOpen}
+            \end{subfigure}
+            \hfill
+            \begin{subfigure}{0.45\textwidth}
+                \includegraphics*[scale = 0.05]{images/RelayOn.jpeg}
+                \caption{Circuit closed.}
+                \label{fig:RelayClosed}
+            \end{subfigure}
+        \end{figure}
 
 \section{Results Analysis}
+
+
 
 \section{Conclusion}
 
 \section{Future Work}
+    
+    In this section some possible improvements for the system are discussed.
+
 \subsection{ADC attenuation }
 
 One area for further enhancement is the handling of the Esp32's ADC weaknesses. In the current setup, the ESP32's ADC is used to read analog sensor signals. However the ESP32 reference voltage is around $1.1V$, meaning that for higher voltage readings the signal is attenuated, this attenuation makes the ADC non linear. 
