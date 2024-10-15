@@ -25,7 +25,7 @@
     \fancyhead[L]{
         \includegraphics[scale = 0.4]{NovaFct.png}
     } % Left of Head note
-    \fancyhead[R]{\footnotesize Eletrónica para Micro-Sistemas} % Right of Head note
+    \fancyhead[R]{\footnotesize Electronics for Micro-Systems} % Right of Head note
     \fancyfoot[L]{\footnotesize MEEC/MIEEC} % Left of Footnote
     \fancyfoot[R]{\thepage  } % Center of Footnote
     %\fancyfoot[R]{\footnotesize Degree} % Right of Footnote
@@ -146,7 +146,7 @@
     \begin{minipage}{0.5\textwidth}
         \begin{flushleft}
             Martim Duarte Agostinho (70392)\\
-            Francisco Simões Coelho Sá da Costa   (\texttt{70386})\\
+            Francisco Simões Coelho Sá da Costa   (70386)\\
             Sofia Margarida Mafra Dias Inácio (58079)\\
         \end{flushleft}
     \end{minipage}%
@@ -609,7 +609,7 @@ following sections.
     In this work, the series used is the E12, with a maximum tolerance of 5\%. So to test the results of
     the output of the two AFE circuits, one hundred simulations were made to assure the reliability of the normal distribution.
 
-    The results for the NTC AFE are the following.
+    The results for the NTC AFE are shown in figure \ref{montecarlontc}.
 
     \begin{figure}[H]
         \centering
@@ -618,7 +618,7 @@ following sections.
         \label{montecarlontc}
     \end{figure}
 
-    And the results for the LM35 AFE circuits.
+    And the results for the LM35 AFE circuits in figure \ref{montecarlolm}.
 
     \begin{figure}[H]
         \centering
@@ -627,18 +627,16 @@ following sections.
         \label{montecarlolm}
     \end{figure}
 
-    By analysing the results of the Monte-Carlo simulation of the NTC AFE, first of all, we can conclude that the
+    By analysing the results of the Monte-Carlo simulation of the NTC AFE we can conclude that the
     slope of the output voltage will be almost the same, the only difference will be in the offset of this function.
     This variation on the offset will unfortunately alter the final result for all temperatures, but the maximum deviation is just  $3^\circ C$, in a worst case scenario.
 
     One other implication of this offset is the values for lower temperatures, where the output would be greater than $3.3V$, so the OpAmp will saturate and the voltage will stay at $3.3V$.
 
-    For the results of the LM35 AFE Monte-Carlo test, the biggest difference between the thirty simulations is the slope of the output voltage,
-    because the resistances in this circuit only affects it's gain. This consequence is more problematic at higher temperatures, since the input voltage is greater at these values.
+    For the results of the LM35 AFE Monte-Carlo test, the major difference between the thirty simulations is the slope of the output voltage,
+    because the resistances in this circuit only affects its gain. This consequence is more problematic at higher temperatures, since the input voltage is greater at these values.
 
-    To better visualize the variation in the output voltage of both systems at the maximum, minimum and average temperature, a more specific simulation was used, where the value of the $R_{NTC}$ and the
-    $V_{LM35}$ were fixed for the temperature tested.
-    So first of all, for 10ºC, the results are represented in figure \ref{10ºC - montecarlo}.
+    To better visualise the variation in the output voltage of both systems at the maximum, minimum and average temperature, a more specific simulation was used, where the value of the $R_{NTC}$ and the $V_{LM35}$ were fixed for the temperature tested. So first of all, for 10ºC, the results are represented in figure \ref{10ºC - montecarlo}.
 
     \begin{figure}[H]
         \centering
@@ -832,7 +830,7 @@ The interface was developed using the Tkinter library, which is a standard Pytho
 
 \subsubsection{Multisampling}
 
-In order to improve the accuracy of the temperature readings, a multisampling technique was used. The ESP32 reads the output of the sensors multiple times and then calculates the average value. This technique helps to reduce noise and improve the accuracy of the temperature readings.
+In order to improve the accuracy of the temperature readings, a multisampling technique was used. The ESP32 reads the output of the sensors multiple times and then calculates the average value. Because this acts as a low-pass filter, this technique helps to reduce noise and improve the accuracy of the temperature readings.
 
 \subsection{Experimental Tests}
 
@@ -876,8 +874,6 @@ In order to improve the accuracy of the temperature readings, a multisampling te
 
         To show the relay working, a LED circuit was opened and closed by the relay. Figure \ref{fig:RelayClosed} shows the circuit at peak temperature and figure \ref{fig:RelayOpen} at the lowest temperature. Confirming our goal was achieved.         
 
-        Another feature of the relay was tested, the manual control. The relay was controlled by the GUI, and the relay was turned on and off manually. 
-
         \begin{figure}[H]
             \centering
             \begin{subfigure}{0.45\textwidth}
@@ -895,6 +891,7 @@ In order to improve the accuracy of the temperature readings, a multisampling te
             \end{subfigure}
         \end{figure}
 
+        Another feature of the relay was tested, the manual control. The relay was controlled by the GUI, and the relay was turned on and off manually. 
 \newpage
 \section{Results Analysis and Conclusions}
 
@@ -912,7 +909,7 @@ In order to improve the accuracy of the temperature readings, a multisampling te
 \section{Future Work}
 \label{future-work}
 
-    In this section some possible improvements for the system are discussed.
+    In this section it will be discussed the possible improvements that could be made to the temperature sensing system to enhance its performance and accuracy.
     
     \subsection{Relay}
     
@@ -949,5 +946,13 @@ Another calibration method is to use a reference sensor to measure the temperatu
 
 \bibliography{references} % Add bibliography data file
 
-\end{document}
+\section{Attachments}
+
+\begin{itemize}
+    \item \textbf{script.py} - Contains the code used to calculate the AFE circuits and the Monte-Carlo simulations.
+    \item \textbf{main.cpp} - Contains the code used to program the ESP32.
+    \item \textbf{GUI\_checkbox.py} - Contains the code used to develop the GUI.
+    \item \textbf{GitHub repository} - \url{https://github.com/SoifaAlpaca/tempereture-sensor}
+
+\end{itemize}
 \end{document}
