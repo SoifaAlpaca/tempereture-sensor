@@ -51,6 +51,17 @@
 \tikzstyle{block} = [draw, rectangle, 
     minimum height=2.5em, minimum width=3.5em]
 \tikzstyle{arrow} = [thick,->,>=stealth]
+
+\usepackage{xcolor}
+
+% Define a custom light blue color
+\definecolor{lightblue}{RGB}{173, 216, 230}
+
+% Define styles with blue shades
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=cyan!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=lightblue]
+
 % Tables
 \usepackage{tabularx} 
 \usepackage{booktabs}
@@ -185,7 +196,7 @@
 
 
     \label{requirements}
-    For the system Design it's important to define the temperature interval in which this system will work, thus it was define as $ T \in [10^\circ C; 40^\circ C]$. 
+    For the system Design it's important to define the temperature interval in which this system will work, thus it was defined as $ T \in [10^\circ C; 40^\circ C]$. 
 
    \begin{figure}[H] 
         \centering
@@ -203,7 +214,7 @@ characteristics of each sensor and why they were chosen for the system design pr
 following sections.
 \subsection{NTC - Negative Temperature Coefficient}
     
-    Negative temperature Coefficient (NTC), means that the sensor resistance decreases as temperature increases. This behavior exhibits a predictable response to temperature variations. Hence we need to develop a system that converts resistance to voltage, so the MCU's ADC can convert it back to ohms and finally to temperature. As represented in figure \ref{fig:NTCBlock}.
+    Negative temperature Coefficient (NTC), means that the sensor resistance decreases as temperature increases. This behavior exhibits a predictable response to temperature variations. Hence, we need to develop a system that converts resistance to voltage, so the MCU's ADC can convert it back to ohms and finally to temperature. As represented in figure \ref{fig:NTCBlock}.
 
     
     \begin{figure}[H]   
@@ -231,7 +242,7 @@ following sections.
 
 \subsection{LM35 - Precision Centigrade Temperature Sensor}
 
-    The LM35 is a precision integrated-circuit temperature sensor with an output voltage that is linearly proportional to the temperature in Celsius, making it more straight forward to use. Unlike other temperature sensors calibrated in Kelvin, the LM35 does not require the user to subtract a constant value to obtain Celsius scaling, simplifying the measurement process. The sensor offers a high level of accuracy, ensuring a typical error of just $\pm 0.5^\circ C$ at $25^\circ C$ \cite{LM35_datasheet} .
+    The LM35 is a precision integrated-circuit temperature sensor with an output voltage that is linearly proportional to the temperature in Celsius, making it more straight forward to use. Unlike other temperature sensors calibrated in Kelvin, the LM35 does not require the user to subtract a constant value to obtain Celsius scaling, simplifying the measurement process. The sensor offers a high level of accuracy, ensuring a typical error of just $\pm 0.5^\circ C$ at $25^\circ C$ \textsuperscript{\cite{LM35_datasheet}} .
 
 \subsection{DS18B20 - Digital Thermometer}
 
@@ -240,7 +251,6 @@ following sections.
 \newpage
 \section{System Design}
 
-    In order to design the system first it's necessary to define the temperature interval in which this circuit will work, thus it was define as $T \in [ 10^{\circ}; 40^{\circ} ]$. 
     The sensors used in this project have undesirable output behaviors, so it's necessary to design an Analog FrontEnd (AFE) for some of them. In this section it will be shown the design choices and calculations for the AFE's.
 
 \subsection{Operational Amplifier}
@@ -280,14 +290,14 @@ following sections.
         \label{tab:opamp}
     \end{table}
 
-    With the characteristics shown in Table \ref{tab:opamp} the only choice for this system is the MCP6001. Even though it has the higher offset voltage, this is the only one that's able to be supplied with $Vs=3.3V$ and have a Rail-to-Rail output voltage, making it possible to supply the OpAmp with the MCU and still output the full ADC range.
+    With the characteristics shown in Table \ref{tab:opamp} the only choice for this system is the MCP6001\textsuperscript{\cite{mcp-datasheet}}. Even though it has the higher offset voltage, this is the only one that can be supplied with $Vs=3.3V$ and have a Rail-to-Rail output voltage, making it possible to supply the OpAmp with the MCU and still output the full ADC range.
 
 
 \subsection{Analog FrontEnd (AFE) NTC}
 
     \subsubsection{ Resistance to Temperature Conversion }
 
-    According to the \hyperref[requirements]{specification} and through the \textit{NTC}'s datasheet \cite{NTC_datasheet} the interval for its resistance values is:
+    According to the \hyperref[requirements]{specification} and through the \textit{NTC}'s datasheet \textsuperscript{\cite{NTC_datasheet}} the interval for its resistance values is:
     
     $$R_{NTC} \in [~5,282k~;~19,98k~]$$
 
@@ -298,7 +308,7 @@ following sections.
     \frac{1}{T} = A + B\cdot \ln(R_{NTC}) + C\cdot [\ln(R_{NTC})]^3
     \end{equation}
 
-    In order to find the parameters $A$, $B$ and $C$, its necessary to use 3 points from it's datasheet \cite{NTC_datasheet}. 
+    In order to find the parameters $A$, $B$ and $C$, it is necessary to use 3 points from it's datasheet \textsuperscript{\cite{NTC_datasheet}}. 
     The points chosen were the two extremes and the middle point.
     
     \begin{equation}
@@ -331,7 +341,7 @@ following sections.
 
     $\cdot$ The output resistance is really high $R\parallel NTC$, 
 
-    $\cdot$ The output voltage is highly non linear, which is a problem because this way some \textit{ADC} resolution is lost.
+    $\cdot$ The output voltage is highly non-linear, which is a problem because this way some \textit{ADC} resolution is lost.
 
     The first problem is solved through a circuit with high impedance at the entrance and the second is somewhat mitigated by using a resistor value around $8K \Omega$. 
 
@@ -357,13 +367,13 @@ following sections.
         \caption{Output Voltage vs Temperature}
     \end{figure}
 
-    With $R=8k$ the output signal is $V_{out} \in [1.31V;2.36V]$. 
+    With $R=8~K$ the output signal is $V_{out} \in [1.31V;2.36V]$. 
     But the \textit{ADC} as resolution of $12$ bits and a voltage range of $3.3V$, meaning that to have the best resolution possible the signal needs an offset and a gain of $2.87$ and $-1.75$ respectively. 
     It's important to note that a $0.1V$ margin was added to $V_{out}$ in order to ensure that the \textit{AFE} works properly in the specified range.
     
     \subsubsection{Circuit Implementation}
     \label{AFENTCCirc}
-    The most obvious way to achieve this values would be with a differential amplifier, 
+    The most obvious way to achieve these values would be with a differential amplifier, 
     as seen in the following circuit.
 
      \begin{figure}[H] 
@@ -373,7 +383,7 @@ following sections.
         \label{difafentc}
     \end{figure}
 
-    Although in the simulation this yields the expected result, using the wheatstone with a precision OpAmp as bridge amplifier, it's possible to achieve gain and offset using less components, yielding better results in terms of power consumption and thermal noise. 
+    Although in the simulation this yields the expected result, using the wheatstone with a precision OpAmp as bridge amplifier \textsuperscript{\cite{SensorSignalConditioning}}, it's possible to achieve gain and offset using fewer components, yielding better results in terms of power consumption and thermal noise. 
 
     
     \begin{figure}[H] 
@@ -405,7 +415,7 @@ following sections.
     \end{equation}
 
     Setting $R_f = 10K$ the values that satisfy the equation system are $R_1 = 9348 \Omega$ and $R_2 = 11760 \Omega$.
-    In the simulation this values are a bit too close to the limits so in order to have better margins and to use the available resistors
+    In the simulation these values are a bit too close to the limits so in order to have better margins and to use the available resistors
     the final values are  $R_1 = 9.1K \Omega$ and $R_2 = 12K \Omega$.
 
     The theorical output voltage of the AFE circuit in function of the temperature will have the
@@ -462,9 +472,7 @@ following sections.
     \end{figure}
 \subsection{Power Consumption}
 
-    In modern electronic systems, power consumption plays a crucial role. This section analyzes the power consumption of the temperature meter system as a whole.
-    So in order to determine the total power consumption, the power of all the resistances present in both AFE circuits were considerd and the theorical 
-    typical consumption of the OpAmps, resulting in the next equation.
+    In modern electronic systems, power consumption plays a crucial role. This section analyses the power consumption of the temperature meter system as a whole. So in order to determine the total power consumption, the power of all the resistances present in both AFE circuits were considered and the theoretical typical consumption of the OpAmps, resulting in the next equation.
     
     \begin{equation}
         P_{total} =  P_{AFENTC} + P_{AFELM35}[W] 
@@ -478,10 +486,10 @@ following sections.
         P_{AFELM35} = \frac{(V_{LM35} - V_{Out{AFELM35}})^2}{R_b} + \frac{V_{LM35}^2}{R_a} + I_{OpAmp} \cdot V_{CC} [W]
     \end{equation}
     
-    The total power will depend on the temperature on a second degree function, since the voltage function by temperature is a first degree, after the linearisation.
-    The power consumption graphic for each AFE circuit are the following.
+    The total power will depend on the temperature on a second degree function, since the voltage function by temperature is a first degree, after the linearization.
+    The power consumption is represented in the figure \ref{powerteo}
 
-    \begin{figure}[h]
+    \begin{figure}[H]
         \centering
         \begin{subfigure}{0.45\textwidth}
             \centering
@@ -501,27 +509,15 @@ following sections.
         \caption{NTC and LM35 AFEs power consumption.}
         \label{powerteo}
     \end{figure}
-
-    \begin{comment}
     
-    The total power consumption graphic is then.
-    \begin{figure}[H] 
-        \centering
-        \includegraphics*[scale = 0.5]{images/PowerTotal.png}
-        \caption{AFEs total power consumption.}
-    \end{figure}
+    From the graphic above, the power consumption describes a parabola, where the value of the power consumption increases with the temperature, with a maximum value of $P_{total} = 1.93 mW$. So, both circuits delivered satisfactory results in this regard, especially, the LM35 AFE circuit, where the consumption was in the order of the microWatts.
 
-    \end{comment}
-    
-    From the graphic above, the power consumption describes a parabolic, where the value of the power consumption increases with the 
-    temperature, with a maximum value of $P_{total} = 1.93 mW$. So, both circuits delivered satisfactory results in this regard, 
-    especially, the LM35 AFE circuit, where the consumption was in the order of the microWatts.
 \subsection{Output Relay }
     
     Lastly the \textit{MCU} will turn on and off a fan. For this purpose 
     a relay will open and close the fan circuit. Because the \textit{MCU's I/O} 
     can't drive the relay a \textit{NPN} transistor is use to get enough current.
-    Thus the following circuit also needs to be dimensioned. It's important to note
+    Thus, the following circuit also needs to be dimensioned. It's important to note
     that the diode is needed to protect the circuit.
     
     \begin{figure}[H] 
@@ -531,11 +527,9 @@ following sections.
         \label{relaycircuit}
     \end{figure}
 
-    The voltage supply value for this circuit must be different form the AFE circuits that were presented,
-    since the minimum supply voltage to operate the relay is $5V$. And for this voltage, the 
-    current on the inductor present in the relay is $72mA$, according to the datasheet.
+    The voltage supply value for this circuit must be different from the AFE circuits that were presented, since the minimum supply voltage to operate the relay is $5V$. And for this voltage, the current on the relay inductor is $72mA$, according to the datasheet.
     
-    So, considering $V_{BE} = 0.7V$, and $\beta = 150$ the equation to define the resistance of this circuit is the next.
+    So, considering $V_{BE} = 0.7V$, and $\beta = 150$ \textsuperscript{\cite{bc547-datasheet}} equation to define the resistance of this circuit is the next.
     \begin{equation}
         R = \frac{I/O_{HIGH}-V_{BE}}{I_r}\cdot \beta\\
         \Leftrightarrow R = 5416.(6) \Omega
@@ -549,13 +543,13 @@ following sections.
     For the purpose of testing the following circuit was designed.
     At first with linear voltage supply since as seen in \hyperref[AFENTCOutV]{NTC's AFE} section, this voltage is almost linear.
 
-    Producing the following results.
+    Producing the results in figure \ref{NTCLinTest}.
  
     \begin{figure}[H] 
         \centering
         \includegraphics*[scale = 0.3]{images/NTCLinearRes.png}
         \caption{Linear supply NTC test results.}
-        \label{wrap-fig:1}
+        \label{NTCLinTest}
     \end{figure}
 
     Confirming the effectiveness of the \textit{AFE} circuit a more realistic
@@ -611,8 +605,8 @@ following sections.
     \begin{equation}
         R_{real} \in [R_{ideal} - tol; R_{ideal} + tol] 
     \end{equation}
-    Where the variable \textit{tol} will depend with the serie of resistances used. 
-    In this work, the serie used is the E12, with a maximum tolerance of 5\%. So to test the results of
+    Where the variable \textit{tol} will depend on resistor's series 
+    In this work, the series used is the E12, with a maximum tolerance of 5\%. So to test the results of
     the output of the two AFE circuits, one hundred simulations were made to assure the reliability of the normal distribution.
 
     The results for the NTC AFE are the following.
@@ -635,12 +629,12 @@ following sections.
 
     By analysing the results of the Monte-Carlo simulation of the NTC AFE, first of all, we can conclude that the
     slope of the output voltage will be almost the same, the only difference will be in the offset of this function.
-    This variation on the offset will unfortunately alter the final result for all temperatures, but the maximum deviation is just  $3^\circ C$, in a worts case scenario.
+    This variation on the offset will unfortunately alter the final result for all temperatures, but the maximum deviation is just  $3^\circ C$, in a worst case scenario.
 
     One other implication of this offset is the values for lower temperatures, where the output would be greater than $3.3V$, so the OpAmp will saturate and the voltage will stay at $3.3V$.
 
     For the results of the LM35 AFE Monte-Carlo test, the biggest difference between the thirty simulations is the slope of the output voltage,
-    because the resistances in this circuit only affects it's gain. This consequence is more problematic at higher temperatures, since the input voltage is greater at this values.
+    because the resistances in this circuit only affects it's gain. This consequence is more problematic at higher temperatures, since the input voltage is greater at these values.
 
     To better visualize the variation in the output voltage of both systems at the maximum, minimum and average temperature, a more specific simulation was used, where the value of the $R_{NTC}$ and the
     $V_{LM35}$ were fixed for the temperature tested.
@@ -777,6 +771,9 @@ For the implementation of the DS18B20 sensor, a $4,7K\Omega$ pull-up resistor wa
     \label{fig:ds-block-diagram}
 \end{figure}
 
+\subsubsection{Relay circuit}
+
+The relay was connected to the ESP32 using a NPN transistor, as shown in Figure \ref{relaycircuit}. The implementation was done by following the pinout provided in the datasheet\textsuperscript{\cite{relay-datasheet}}. 
 \subsubsection{By-pass Capacitors}
 
 In order to reduce the noise in the ESP32 ADC, bypass $0,1\mu C$ capacitors were used. The capacitors were connected between the ADC input pads and the ground.
@@ -795,18 +792,40 @@ The software was developed using C++ and Python. The C++ code was used to progra
 
 In Figure \ref{fig:flowchart} is shown a flowchart of the software implementation. The ESP32 reads the output of the sensors, and then sends the data to the GUI. The GUI displays the data in real-time, and the user can control the fan using the GUI.
 
-\begin{figure}[H] 
-    \centering
-    \includegraphics*[scale = 0.8]{images/jpoliveira.jpg}
+\begin{figure}[h]
+    \begin{center}
+        \scalebox{0.6}{
+            \begin{tikzpicture}[node distance=2cm]
+            % Nodes
+            \node (start) [startstop] {Start};
+            \node (read) [process, below of=start] {ESP32 reads sensors};
+            \node (send) [process, below of=read] {Send data to GUI};
+            \node (display) [process, below of=send] {GUI displays data};
+            \node (control) [decision, below of=display, yshift=-0.5cm] {User controls fan?};
+            \node (fanOn) [process, right of=control, xshift=3cm] {Turn fan ON};
+            \node (fanOff) [process, below of=control, yshift=-1cm] {Fan remains OFF};
+            \node (end) [startstop, below of=fanOff] {End};
+            % Arrows
+            \draw [arrow] (start) -- (read);
+            \draw [arrow] (read) -- (send);
+            \draw [arrow] (send) -- (display);
+            \draw [arrow] (display) -- (control);
+            \draw [arrow] (control) -- node[anchor=south] {Yes} (fanOn);
+            \draw [arrow] (control) -- node[anchor=west] {No} (fanOff);
+            \draw [arrow] (fanOff) -- (end);
+            \draw [arrow] (fanOn) |- (end);
+            \end{tikzpicture}
+        }
+    \end{center}
     \caption{Flowchart of the software implementation.}
     \label{fig:flowchart}
-\end{figure}
+    \end{figure}
 
-The interface was developed using the Tkinter library, which is a standard Python interface to the Tk GUI toolkit. The Tkinter library is easy to use and allows for the creation of simple and intuitive interfaces. In Figure \ref{fig:gui} is shown the GUI developed for the system.
+The interface was developed using the Tkinter library, which is a standard Python interface to the Tk GUI toolkit. The Tkinter library is easy to use and allows for the creation of simple and intuitive interfaces. In Figure \ref{fig:gui} is shown the GUI developed for the system. The GUI displays the temperature readings from the sensors in real-time and allows the user to control the fan using the relay with the checkbox "Relay ON/OFF" or it controls the relay automatically by selecting the "Automatic" checkbox.
 
 \begin{figure}[H] 
     \centering
-    \includegraphics*[scale = 0.4]{images/GUI-presentation.png}
+    \includegraphics*[scale = 0.4]{images/gui.png}
     \caption{GUI developed for the system.}
     \label{fig:gui}
 \end{figure}
@@ -819,12 +838,12 @@ In order to improve the accuracy of the temperature readings, a multisampling te
 
     The experimental tests were conducted to evaluate the performance and accuracy of the temperature sensing system. The primary objective was to verify the functionality of the three different sensors—NTC thermistor, LM35, and DS18B20—and compare their responses under controlled temperature changes.
 
-    To simulate real-world temperature variations, the sensors were placed together in close proximity, and hot air was used to gradually heat them. This method allowed us to observe how each sensor responded to increasing temperatures in real time and to measure the accuracy of the readings obtained from the ESP32's ADC. The system's outputs were displayed on the graphical user interface (GUI), providing a direct comparison between the temperature readings from the different sensors.
+    To simulate real-world temperature variations, the sensors were placed together in proximity, and hot air was used to gradually heat them. This method allowed us to observe how each sensor responded to increasing temperatures in real time and to measure the accuracy of the readings obtained from the ESP32's ADC. The system's outputs were displayed on the graphical user interface (GUI), providing a direct comparison between the temperature readings from the different sensors.
 
         
-    \subsubsection{ Sensors }
+    \subsubsection{ Sensors}
 
-        Firstly we test without changing the temperature, this way the difference between readings is more obvious.
+        Firstly we test without changing the temperature, this way the difference between readings is more obvious. Figure \ref{fig:FixTemp} shows the sensor readings for a fixed temperature. 
         
         \begin{figure}[H] 
             \centering
@@ -832,10 +851,8 @@ In order to improve the accuracy of the temperature readings, a multisampling te
             \caption{Sensor readings for fix temperature.}
             \label{fig:FixTemp}
         \end{figure}
-
-        \textcolor{red}{ADICIONAR TEXTO}
         
-        After that the sensors were put together and heated as shown in figure \ref{fig:VarTemp}.
+        After that the sensors were put together and heated as shown in figure \ref{fig:VarTemp}. Here the temperature was increased gradually, and the sensors were able to detect the changes in temperature. The results were displayed on the GUI, allowing to compare the readings from the different sensors in real time.
 
         \begin{figure}[H] 
             \centering
@@ -847,70 +864,86 @@ In order to improve the accuracy of the temperature readings, a multisampling te
         Because the sensors have different mass and dissipate heat at different rates, here the temperature will vary between them by a large margin. Analysing the graph the ntc reacts faster and the digital sensor is the slowest.  
 
 
-    \subsubsection{ Relay }
+    \subsubsection{Relay}
         In order to test if the relay would open and close according to the Digital sensor reading, it was heated and then cooled. Figure \ref{fig:RelayAuto} shows the sensor readings. 
 
         \begin{figure}[H] 
             \centering
-            \includegraphics*[scale = 0.4]{images/RelayAutoTest.png}
+            \includegraphics*[scale = 0.5]{images/RelayAutoTest.png}
             \caption{Temperature  for Relay Test.}
             \label{fig:RelayAuto}
         \end{figure}
 
         To show the relay working, a LED circuit was opened and closed by the relay. Figure \ref{fig:RelayClosed} shows the circuit at peak temperature and figure \ref{fig:RelayOpen} at the lowest temperature. Confirming our goal was achieved.         
 
+        Another feature of the relay was tested, the manual control. The relay was controlled by the GUI, and the relay was turned on and off manually. 
 
-        \begin{figure}[H] 
+        \begin{figure}[H]
             \centering
             \begin{subfigure}{0.45\textwidth}
-                \includegraphics*[scale = 0.05]{images/RelayOff.jpeg}
+                \centering
+                \rotatebox{-90}{\includegraphics[scale=0.05]{images/RelayOff.jpeg}}
                 \caption{Circuit Open.}
                 \label{fig:RelayOpen}
             \end{subfigure}
             \hfill
             \begin{subfigure}{0.45\textwidth}
-                \includegraphics*[scale = 0.05]{images/RelayOn.jpeg}
-                \caption{Circuit closed.}
+                \centering
+                \rotatebox{-90}{\includegraphics[scale=0.05]{images/RelayOn.jpeg}}
+                \caption{Circuit Closed.}
                 \label{fig:RelayClosed}
             \end{subfigure}
         \end{figure}
 
-\section{Results Analysis}
+\newpage
+\section{Results Analysis and Conclusions}
 
-    
+    The experimental tests were successful in demonstrating the functionality and accuracy of the temperature sensing system. The system was able to accurately measure temperature variations using the NTC thermistor, LM35, and DS18B20 sensors. The GUI provided real-time temperature readings and allowed the user to control the fan using the relay.
 
+    The NTC thermistor was the fastest sensor to respond to temperature changes, followed by the LM35. The NTC thermistor and LM35 sensors provided accurate temperature readings, using the DS18B20 as a control. The relay was able to open and close the fan circuit based on the temperature readings from the digital sensor.
 
+    The power consumption of the system was within the expected range, with the LM35 AFE circuit consuming less power than the NTC AFE circuit as expected. The OpAmp in the NTC AFE circuit had a different power consumption profile than expected, but this did not affect the overall performance of the system.
 
-\section{Conclusion}
+    In conclusion, the temperature sensing system was able to accurately measure temperature variations using the NTC thermistor, LM35, and DS18B20 sensors. The GUI provided real-time temperature readings and allowed the user to control the fan using the relay. The system performed well under controlled temperature changes and provided accurate and stable results.
+
+    The system could be further improved as is explained in Section \ref{future-work}. Overall, the temperature sensing system was successful in meeting the project requirements.
 
     
 \section{Future Work}
-    
+\label{future-work}
+
     In this section some possible improvements for the system are discussed.
+    
+    \subsection{Relay}
+    
+    Since the relay is designed to switch on when the temperature exceeds a target value of $25^\circ C$, and switch off when the temperature drops below this threshold. However, we observed an issue where the relay oscillated between its on and off states when the temperature was close to the target value. 
 
-\subsection{ADC attenuation }
+    This oscillation occurs because the temperature readings fluctuate around the $25^\circ C$ threshold due to minor noise or temperature instability. As the temperature hovers around the target, even small variations in the readings can cause the relay to rapidly switch states, leading to erratic behavior, excessive wear on the relay, and inefficient fan control.
 
-One area for further enhancement is the handling of the Esp32's ADC weaknesses. In the current setup, the ESP32's ADC is used to read analog sensor signals. However the ESP32 reference voltage is around $1.1V$, meaning that for higher voltage readings the signal is attenuated, this attenuation makes the ADC non linear. 
+    This behavior is called bouncing \textsuperscript{ \cite{9061500} } and it can be solved with a Schmitt trigger, implemented either in hardware or through software.
+
+\subsection{ADC attenuation}
+
+One area for further enhancement is the handling of the Esp32's ADC weaknesses. In the current setup, the ESP32's ADC is used to read analog sensor signals. However, the ESP32 reference voltage is around $1.1V$, meaning that for higher voltage readings the signal is attenuated, this attenuation makes the ADC non-linear. 
 Knowing this we could've adapted the voltage range for the AFEs so we could have avoided this non-linear zones. 
 
 \begin{figure}[H] 
     \centering
     \includegraphics*[scale = 0.4]{images/ADC-linearity-test-at-12-bit-resolution.png}
-    \caption{ADC linearity\cite{ESP32_microcontroller}.}
+    \caption{ADC linearity\textsuperscript{\cite{ESP32_microcontroller}}.}
     \label{fig:ADClinear}
 \end{figure}
 
-As represented in figure \ref{fig:ADClinear}, the most appropriate attenuation for this project would be 6 db's for the biggest where the ADC is linear ADC.
+As represented in figure \ref{fig:ADClinear}, the most appropriate attenuation for this project would be 6 dB's for the biggest where the ADC is linear ADC.
 
-\subsection{ Calibration methods }
+\subsection{Calibration methods}
 
 Another critical improvement for future iterations is the implementation calibration methods to ensure greater accuracy across all temperature ranges. Calibration is essential because even with optimal ADC settings, external factors like component tolerances, temperature drift, and power supply variations can introduce errors in the system.
 
+One possible calibration method is to use the Steinhart-Hart equation to model the sensor's resistance-temperature relationship. This equation is a third-order polynomial that can be used to calculate the temperature from the sensor's resistance. By calibrating the sensor using this equation, the system can achieve greater accuracy and stability in temperature measurements, the measurements can be done in a controlled environment, and the results can be compared to the theoretical values calculated in the previous sections\textsuperscript{\cite{steinhart-hart}}.
 
-lidar com a atenuação do adc do esp, dimensionar para 2V
-experimentar uma linearização do valor do ntc com a relação tensão temp
-para usar o stein hart tirar tres pontos experimentais para o modelo ser mais aproximado ao real 
-(metodos de calibração)lidar com a atenuação do adc do esp, dimensionar para 2V
+Another calibration method is to use a reference sensor to measure the temperature in a controlled environment. By comparing the readings from the reference sensor to the readings from the system, the system can be calibrated to improve accuracy and stability\textsuperscript{\cite{calibration-methods}}.
+
 
 \newpage
 
