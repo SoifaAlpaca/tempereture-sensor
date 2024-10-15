@@ -232,17 +232,16 @@ following sections.
 
 \subsection{DS18B20 - Digital Thermometer}
 
-    Unlike the other sensors this one outputs already the temperature value in digital signal, making it easier to use. This will be helpful in oder to have a control value to measure the quality of the other sensors.
+    Unlike the other sensors this one outputs already the temperature value in digital signal, making it easier to use. This will be helpful in order to have a control value to measure the quality of the other sensors.
 
 \newpage
 \section{System Design}
 
     In order to design the system first it's necessary to define the temperature interval in which this circuit will work, thus it was define as $T \in [ 10^{\circ}; 40^{\circ} ]$. 
-    The sensors used in this project have undesirable output behaviours, so it's necessary to design an Analog FrontEnd (AFE) for some of them. In this section it will be shown the design choices and calculations for the AFE's.
+    The sensors used in this project have undesirable output behaviors, so it's necessary to design an Analog FrontEnd (AFE) for some of them. In this section it will be shown the design choices and calculations for the AFE's.
 
 \subsection{Operational Amplifier}
           
-
     For the following AFE's it's important to choose an appropriate Operational Amplifier (OpAmp). 
 
     The desired characteristics are:
@@ -254,55 +253,38 @@ following sections.
     $\cdot$ Low supply voltage
 
     $\cdot$ Low offset voltage
-\begin{table}[h]
-    \centering
-    \caption{Comparison of Key Parameters for MCP6001, TL084, and LM324}
-    \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
-        \toprule
-        \textbf{Characteristic} & \textbf{MCP6001} & \textbf{TL084} & \textbf{LM324} \\
-        \midrule
-        Max Output (V) & $(V+)-25mV$ & $(V+)$ & $(V+) - 1.5V$ \\
-        \midrule
-        Min Output (V) & $(V-)+25mV$ & $(V-) + 1.5V$ & $(V-) + 150mV$ \\
-        \midrule
-        Supply Range (V) & $1.8V$ to $6.0V$ & $4.5V$ to $40V$ & $3V$ to $36V$ \\
-        \midrule
-        Offset (mV) & $\pm 4.5mV$ & $1mV$ & $\pm 3 mV$ \\
-        \midrule
-        Max Output (mA) & $\pm 23 mA$ $(5.5V)$ & $10 mA$ & $\pm 30 mA$ \\
-        \midrule
-        Idle Consumption & $100 \mu A $ & $1.4$ $mA$ & $240 \mu A$ \\
-        \bottomrule
-    \end{tabularx}
-    \label{tab:opamp}
-\end{table}
 
-    % \begin{table}[h]            
-    %     \centering
-    %     \begin{tabular}{|c|c|c|c|}
-    %     \hline
-    %     \textbf{Characteristic}         & \textbf{MCP6001}      & \textbf{TL084}   & \textbf{LM324}  \\ \hline
-    %     \textbf{Max Output (V)}         &$(V+)-25mV$            & $(V+)$           & $(V+) - 1.5V$   \\ \hline
-    %     \textbf{Minimum Output (V)}     &$(V-)+25mV$            & $(V-) + 1.5V$   & $(V-) + 150mV$  \\ \hline
-    %     \textbf{Supply Range (V)}       & $1.8V$ to $6.0V$      & $4.5V$ to $40V$  & $3V$ to $36V$   \\ \hline
-    %     \textbf{Offset (mV)}            & $\pm 4.5mV$             & $1mV$              & $\pm 3 mV$      \\ \hline
-    %     \textbf{Max Output (mA)}        & $\pm 23 mA$ $(5.5V)$  & $10 mA$          & $\pm 30 mA$     \\ \hline
-    %     \textbf{Idle Consumption}       & $100 \mu A $          & $1.4$ $mA$       & $240 \mu A$      \\ \hline
-    %     \end{tabular}
-    %     \caption{Comparison of Key Parameters for MCP6001, TL084, and LM324}
-    % \end{table}
+    \begin{table}[h]
+        \centering
+        \caption{Comparison of Key Parameters for MCP6001, TL084, and LM324}
+        \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+            \toprule
+            \textbf{Characteristic} & \textbf{MCP6001} & \textbf{TL084} & \textbf{LM324} \\
+            \midrule
+            Max Output (V) & $(V+)-25mV$ & $(V+)$ & $(V+) - 1.5V$ \\
+            \midrule
+            Min Output (V) & $(V-)+25mV$ & $(V-) + 1.5V$ & $(V-) + 150mV$ \\
+            \midrule
+            Supply Range (V) & $1.8V$ to $6.0V$ & $4.5V$ to $40V$ & $3V$ to $36V$ \\
+            \midrule
+            Offset (mV) & $\pm 4.5mV$ & $1mV$ & $\pm 3 mV$ \\
+            \midrule
+            Max Output (mA) & $\pm 23 mA$ $(5.5V)$ & $10 mA$ & $\pm 30 mA$ \\
+            \midrule
+            Idle Consumption & $100 \mu A $ & $1.4$ $mA$ & $240 \mu A$ \\
+            \bottomrule
+        \end{tabularx}
+        \label{tab:opamp}
+    \end{table}
 
     With the characteristics shown in Table \ref{tab:opamp} the only choice for this system is the MCP6001. Even though it has the higher offset voltage, this is the only one that's able to be supplied with $Vs=3.3V$ and have a Rail-to-Rail output voltage, making it possible to supply the OpAmp with the MCU and still output the full ADC range.
 
 
 \subsection{Analog FrontEnd (AFE) NTC}
-\label{AFENTC}
 
     \subsubsection{ Resistance to Temperature Conversion }
 
-    \textcolor{red}{ achei que ficava mais organizado com 2 seccoes se nao gostarem tambem acho que fica bem como estava }
-
-    According to the \hyperref[requirements]{specification} and through the \textit{NTC}'s datasheet the interval for its resistance values is:
+    According to the \hyperref[requirements]{specification} and through the \textit{NTC}'s datasheet \cite{NTC_datasheet} the interval for its resistance values is:
     
     $$R_{NTC} \in [~5,282k~;~19,98k~]$$
 
@@ -313,7 +295,7 @@ following sections.
     \frac{1}{T} = A + B\cdot \ln(R_{NTC}) + C\cdot [\ln(R_{NTC})]^3
     \end{equation}
 
-    In order to find the parameters $A$, $B$ and $C$, its necessary to use 3 points from the datasheet. 
+    In order to find the parameters $A$, $B$ and $C$, its necessary to use 3 points from it's datasheet \cite{NTC_datasheet}. 
     The points chosen were the two extremes and the middle point.
     
     \begin{equation}
@@ -349,43 +331,15 @@ following sections.
     $\cdot$ The output voltage is highly non linear, which is a problem because this way some \textit{ADC} resolution is lost.
 
     The first problem is solved through a circuit with high impedance at the entrance and the second is somewhat mitigated by using a resistor value around $8K \Omega$. 
-    \textcolor{red}{Vejam se acham se faz sentido ter codigo aqui. ~ To achieve this value, the beta model was used for the $NTC$ and through a python script, the resistor value was iterated until an almost linear output was achieved. See NtcTempToVoltage() function in the attached python script.}
-    
-    To achieve this value, the beta model was used for the $NTC$ and through the following python script, the resistor value was iterated until an almost linear output was achieved. 
 
-    \begin{lstlisting}[language=Python]
-        vcc  = 3.3 
-        Tmin = 10 + 273.15  #Minimum temperature in Kelvin
-        Tmax = 40 + 273.15  #Maximum temperature in Kelvin
-        R0   = 10*k         #Resistance at 25C
-        T0   = 298.15       #25c -> K
-        b    = 3965         #beta value (Datasheet)
-        Rntc = R0*( exp( b*( (1/T) - (1/T0) ) ) ) #Beta model equation
-        Vout = Rntc/(Rntc+R)
-        Vout = Vout * vcc
-        
-        p = plot(Vout.subs(R,8*k) ,(T,Tmin,Tmax), xlabel='Temperature (K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (8k$\\Omega$)',show=False,axis_center=(282,1.3))
-        #p.show()
-        p = plot(Vout.subs(R,100*k),(T,Tmin,Tmax), xlabel='Temperature (K)', ylabel='$V_{out}$', title='Output Voltage vs Temperature (100k$\\Omega$)',show=False,axis_center=(282,0.15))
-        #p.show()
-
-        VTmax = Vout.evalf(subs={R:8*k,T:Tmax})
-        VTmin = Vout.evalf(subs={R:8*k,T:Tmin})
-        Slope = (VTmax - VTmin)/(Tmax - Tmin)
-        inter = VTmax - Slope*Tmax
-
-        print( "V(T = 40C): "+str( VTmax ) + " V\nV(T = 10C): " +str( VTmin )+" V" )
-        print( "Slope : "+str( Slope ) )
-        print( "Interception: "+str( inter ) )
-        
-    \end{lstlisting}
+    To achieve this value, the beta model was used for the $NTC$ and through a python script, the resistor value was iterated until an almost linear output was achieved. See NtcTempToVoltage() function in the attached python script.
     ~
     
     Yielding the following results:
     
     ~
 
-    \begin{figure}[h]
+    \begin{figure}[H]
         \centering
         \begin{subfigure}{0.45\textwidth}
             \centering
@@ -405,7 +359,7 @@ following sections.
     It's important to note that a $0.1V$ margin was added to $V_{out}$ in order to ensure that the \textit{AFE} works properly in the specified range.
     
     \subsubsection{Circuit Implementation}
-    
+    \label{AFENTCCirc}
     The most obvious way to achieve this values would be with a differential amplifier, 
     as seen in the following circuit.
 
@@ -429,22 +383,9 @@ following sections.
     As already specified the $R_3$ value is $8K~\Omega$ and for the purpose circuit dimensioning the circuit 
     the positive node of the OpAmp will be treated as a variable $V_p$.
 
-    \textcolor{red}{ Vejam se acham que o codigo devia ficar aqui.       Using python the circuit function $V_{out}(V_p)$(see function AfeNtc() in the attached python script, script.py): }
+    Using python the circuit function $V_{out}(V_p)$(see function AfeNtc() in the attached python script, script.py): 
 
-    Using the following python code the circuit function $V_{out}(V_p)$ is found:
        
-    \begin{lstlisting}[language=Python]
-        
-        vcc         = 3.3
-    
-        it = -(vp/r2) + ( vcc - vp )/r1
-        vo = vp - it*rf
-        #Here the circuit's function is found
-        print("Circuit Function: ")
-        print( latex( factor(vo,vp) ) )
-
-    \end{lstlisting}
-    
     Providing the following expression:
 
     \begin{equation}
@@ -483,7 +424,7 @@ following sections.
     $$V_{out} = 10^{-2}\cdot T$$
 
     Hence, in the specified conditions $V_{out}\in[0.1;0.4]$. 
-    To increase resolution as done in \hyperref[AFENTC]{NTC's AFE subsection},
+    To increase resolution as done in \hyperref[AFENTCCirc]{NTC's AFE subsection},
     it's needed to add gain and an offset. 
     For this purpose a differential amplifier can be used.  
     
@@ -534,8 +475,8 @@ following sections.
         P_{AFELM35} = \frac{(V_{LM35} - V_{Out{AFELM35}})^2}{R_b} + \frac{V_{LM35}^2}{R_a} + I_{OpAmp} \cdot V_{CC} [W]
     \end{equation}
     
-    The total power will depend on the temperature on a second degree function, since the voltage function by temperature is a first degree, after the linearization.
-    The power consumption graphic for each AFE circuit are the next.
+    The total power will depend on the temperature on a second degree function, since the voltage function by temperature is a first degree, after the linearisation.
+    The power consumption graphic for each AFE circuit are the following.
 
     \begin{figure}[h]
         \centering
@@ -548,10 +489,17 @@ following sections.
             \centering
             \includegraphics[width=\textwidth]{images/PowerLM.png}
             \caption{ LM35 }
+        \end{subfigure}\
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics*[scale = 0.35]{images/PowerTotal.png}
+            \caption{Total power consumption.}
         \end{subfigure}
         \caption{NTC and LM35 AFEs power consumption.}
     \end{figure}
 
+    \begin{comment}
+    
     The total power consumption graphic is then.
     \begin{figure}[H] 
         \centering
@@ -559,6 +507,8 @@ following sections.
         \caption{AFEs total power consumption.}
     \end{figure}
 
+    \end{comment}
+    
     From the graphic above, the power consumption describes a parabolic, where the value of the power consumption increases with the 
     temperature, with a maximum value of $P_{total} = 1.93 mW$. So, both circuits delivered satisfactory results in this regard, 
     especially, the LM35 AFE circuit, where the consumption was in the order of the microWatts.
