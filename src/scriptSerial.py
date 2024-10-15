@@ -3,7 +3,7 @@ import time
 import matplotlib.pyplot as plt
 import pandas as pd
 # timeout is 1 second for reading
-ser = serial.Serial('COM6', 115200, timeout=2)
+ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=2)
 time.sleep(2)  # wait for the Serial to initialize
 
 number = 50  # number of lines to read
