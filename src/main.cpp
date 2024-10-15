@@ -14,6 +14,7 @@
 
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
+HardwareSerial mySerial(1);  // Use UART1 or UART2 depending on your setup
 
 #define VREF 3.3     // 3.3V is the reference voltage of ESP32
 #define ADC_RES 4096 // maximum value of ADC is 4095 (2^12 - 1)
@@ -123,37 +124,47 @@ void relayTempControl(double tempC)
 
 void relayGUIControl()
 {
-  if (command == "AUTOMATIC")
+
+  if (!command.compareTo("AUTOMATIC"))
   {
-    relayTempControl(tempC);
     // Serial.println("Automatic mode");
     relay_mode = "AUTOMATIC";
   }
-  if (command == "MANUAL")
+  if (!command.compareTo("MANUAL"))
   {
     relay_mode = "MANUAL";
     // Serial.println("Manual mode");
   }
-  if (command == "RELAY_ON")
+
+  if(!relay_mode.compareTo("AUTOMATIC")){
+    
+    relayTempControl(tempC);
+    command = "";
+    return;
+  }
+
+  if (!command.compareTo("RELAY_ON"))
   {
     // Turn the relay ON
     digitalWrite(RELAY, HIGH);
 
     //  Serial.println("Relay is ON");
-    relay_status = "RELAY_ON";
-    delay(1000);
+    //relay_status = "RELAY_ON";
+    //delay(1000);
   }
-  if (command == "RELAY_OFF")
+  if (!command.compareTo("RELAY_OFF"))
   {
     // Turn the relay OFF
     digitalWrite(RELAY, LOW);
-    delay(50);
+    //delay(50);
     //  Serial.println("Relay is OFF");
-    relay_status = "RELAY_OFF";
-    delay(1000);
+    //relay_status = "RELAY_OFF";
+    //delay(1000);
   }
-  // Clear the command string for the next command
+
   command = "";
+
+  // Clear the command string for the next command
 }
 
 void setup()
@@ -172,6 +183,7 @@ void setup()
   command = "RELAY_OFF";
   relay_mode = "MANUAL";
   Serial.begin(115200);
+  //mySerial.begin(115200, SERIAL_8N1, 16, 17);  // UART1: TX=17, RX=16 (adjust as per your wiring)
   // put your setup code here, to run once:
 }
 
@@ -220,20 +232,18 @@ void loop()
     previousMicros = micros(); // save the current time
   }
   // Check if data is available on the serial port
+  
   if (Serial.available() > 0)
   {
     // Read the incoming byte
-    char incomingChar = Serial.read();
-
-    // Append the received character to the command string
-    if (incomingChar != '\n')
-    {
-      command += incomingChar;
-    }
-    else
-    {
-      // If the command is complete, process it
-      relayGUIControl();
+    command = Serial.readString();
+    while(false){ 
+      
+      Serial.println( command );
+      if( !command.compareTo("RELAY_ON") ){
+        Serial.println( "Relay Off" );
+      }
     }
   }
+  relayGUIControl();
 }

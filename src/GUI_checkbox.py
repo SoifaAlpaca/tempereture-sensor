@@ -7,7 +7,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pandas as pd
 
 # Serial connection initialization (Adjust the COM port and baud rate as per your setup)
-ser = serial.Serial('COM6', 115200, timeout=2)
+ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=2)
 time.sleep(2)  # wait for the Serial to initialize
 
 # Global variable to control whether the graph updates
@@ -39,18 +39,22 @@ def read_data():
 
 def toggle_relay():
     if relay_var.get():
-        ser.write(b'RELAY_ON\n')
+        print('RELAY_ON\n')
+        ser.write('RELAY_ON'.encode('utf-8'))
     else:
-        ser.write(b'RELAY_OFF\n')
+        print('RELAY_Off\n')
+        ser.write('RELAY_OFF'.encode('utf-8'))
 
 # Callback function for automatic mode checkbox
 
 
 def toggle_automatic():
     if automatic_var.get():
-        ser.write(b'AUTOMATIC\n')
+        print('AUTOMATIC\n')
+        ser.write('AUTOMATIC'.encode('utf-8'))
     else:
-        ser.write(b'MANUAL\n')
+        print('Manual\n')
+        ser.write('MANUAL'.encode('utf-8'))
 
 # Update temperature readings and plot
 
